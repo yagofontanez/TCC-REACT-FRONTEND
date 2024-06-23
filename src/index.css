@@ -6,3 +6,18 @@
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
+
+.toast-success {
+  background-color: #3ed543 !important;
+  color: white !important;
+}
+
+.toast-error {
+  background-color: #b00c00 !important;
+  color: white !important;
+}
+
+.toast-progress {
+  color: white !important;
+  background-color: white !important;
+}

@@ -18,7 +18,7 @@ export const createAdmin = async (admin: Omit<Admin, 'ID'>): Promise<Admin> => {
 };
 
 export const getAdmin = async (id: string): Promise<Admin> => {
-    const response = await api.get(`/usuarios/${id}`);
+    const response = await api.get(`/admins/${id}`);
     return response.data;
 };
 
@@ -29,4 +29,9 @@ export const updateAdmin = async (id: string, admin: Partial<Omit<Admin, 'ID'>>)
 
 export const deleteAdmin = async (id: string): Promise<void> => {
     await api.delete(`/admins/${id}`);
+};
+
+export const loginAdmin = async (email: string, password: string): Promise<any> => {
+    const response = await api.post('/admins/login', { EMAIL: email, SENHA: password });
+    return response.data;
 };

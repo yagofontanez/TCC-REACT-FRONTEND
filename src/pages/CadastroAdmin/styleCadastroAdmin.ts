@@ -16,11 +16,23 @@ export const Container = styled.div`
 
 export const ContainerLogin = styled.div`
   width: 40rem;
-  height: 30rem;
+  height: 40rem;
   background: ${grayHalley};
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   border-radius: 1.5rem;
+
+  .register-admin {
+    color: ${whiteHalley};
+    font-weight: 500;
+  }
+
+  .form-register {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 `;

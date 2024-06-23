@@ -2,23 +2,36 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, ContainerLogin } from './styleLogin';
-import { Admin, getAdmins } from '../../services/adminsServices';
+import { Admin, getAdmins, loginAdmin } from '../../services/adminsServices';
+import InputForm from '../../Components/InputForm/indexInputForm';
+import InputButton from '../../Components/InputButton/indexInputButton';
+import { toast } from 'react-toastify';
 
 const Login: React.FC = () => {
 
   const navigate = useNavigate();
   const [showError, setShowError] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleGoToDash = async () => {
-    const data = await getAdmins();
-    const valueUser = window.document.querySelector('.input-user') as HTMLInputElement;
-    const valuePassword = window.document.querySelector('.input-password') as HTMLInputElement;
-    const validAdmin = data.find(admin => admin.NOME_USUARIO === valueUser.value && admin.SENHA === valuePassword.value);
-
-    if (validAdmin) {
-      navigate('/gerenciamento');
-    } else {
+    try {
+      const response = await loginAdmin(email, password);
+      console.log(email, 'email')
+      console.log(password, 'password')
+      console.log(response.message);
+      if (response.data === 200) {
+        navigate('/gerenciamento');
+      } else {
+        toast.error('caiu no else sei la pq')
+      }
+    } catch (error) {
       setShowError(true);
+      setEmail('');
+      setPassword('');
+      console.log(error, 'e')
+      console.log(email, 'email')
+      console.log(password, 'password')
     }
   }
 
@@ -32,26 +45,18 @@ const Login: React.FC = () => {
         <h1 className='title-login'>Login</h1>
         <div className="form-login">
           <div className="login">
-            <div className="input-container">
-              <input onFocus={onFocusInput} className='input-user' required={true} id="input" type="text" />
-              <label className="label" htmlFor="input">Usuário</label>
-              <div className="underline"></div>
-            </div>
+          <InputForm type='text' label='Usuário' onFocus={onFocusInput} value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="senha">
-            <div className="input-container">
-              <input onFocus={onFocusInput} className='input-password' required={true} id="input" type="password" />
-              <label className="label" htmlFor="input">Senha</label>
-              <div className="underline"></div>
-            </div>
+          <InputForm type='password' label='Senha' onFocus={onFocusInput} value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
         </div>
         <div className="buttons">
-          <button onClick={handleGoToDash}>Entrar</button>
+          <InputButton text='Entrar' onClick={handleGoToDash} />
           {showError && (
             <p className='error'>Usuário ou Senha inválidos</p>
           )}
-          <button onClick={() => navigate('/registrar')}>Cadastrar</button>
+          <InputButton text='Cadastrar' onClick={() => navigate('/registrar')} />
         </div>
       </ContainerLogin>
     </Container>
