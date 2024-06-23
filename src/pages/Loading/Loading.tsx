@@ -10,19 +10,20 @@ const Loading: React.FC = () => {
     useEffect(() => {
         setTimeout(() => {
             navigate('/login');
-        }, 2000);
+        }, 1000);
     }, []);
-    
+
     return (
         <Container>
-            <div className="loader3">
-                <div className="circle1"></div>
-                <div className="circle1"></div>
-                <div className="circle1"></div>
-                <div className="circle1"></div>
-                <div className="circle1"></div>
+            <div className="loader">
+                <div className="loader-square"></div>
+                <div className="loader-square"></div>
+                <div className="loader-square"></div>
+                <div className="loader-square"></div>
+                <div className="loader-square"></div>
+                <div className="loader-square"></div>
+                <div className="loader-square"></div>
             </div>
-
         </Container>
     );
 };

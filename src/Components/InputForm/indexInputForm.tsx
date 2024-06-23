@@ -15,16 +15,14 @@ const InputForm: React.FC<propsInput> = ({ type, label, value, onChange, onFocus
         <Container>
             <div className="input-container">
                 <input
-                    onFocus={onFocus}
-                    className='input-user'
-                    required={true}
-                    id="input"
                     type={type}
                     value={value}
+                    name={type}
                     onChange={onChange}
+                    onFocus={onFocus}
+                    className="text-input"
                 />
-                <label className="label" htmlFor="input">{label}</label>
-                <div className="underline"></div>
+                <label htmlFor={label}>{label}</label>
             </div>
         </Container>
     );

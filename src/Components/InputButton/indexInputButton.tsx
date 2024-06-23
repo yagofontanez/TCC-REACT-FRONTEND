@@ -10,7 +10,7 @@ const InputButton: React.FC<propsButton> = ({ text, onClick }) => {
 
     return (
         <Container>
-            <button onClick={onClick}>{text}</button>
+            <button  onClick={onClick} id="bottone1">{text}</button>
         </Container>
     );
 };

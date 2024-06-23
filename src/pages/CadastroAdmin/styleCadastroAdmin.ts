@@ -1,38 +1,52 @@
+import { color } from './../../../node_modules/@mui/system/index.d';
 import styled from 'styled-components';
-import { grayHalley, redHalley, whiteHalley } from '../../utils/colors';
+import { bege, grayHalley, marromEscuro, redHalley, whiteHalley } from '../../utils/colors';
 import background from '../../assets/backgroundLogin.png';
 
 export const Container = styled.div`
   width: 100%;
   max-height: max-content;
   height: 100vh;
-  background: url(${background});
-  background-size: cover;
+  background: ${bege};
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   margin: 0 auto;
+  padding: 5rem 5rem;
 `;
 
 export const ContainerLogin = styled.div`
-  width: 40rem;
-  height: 40rem;
-  background: ${grayHalley};
+  width: 30rem;
+  height: 10rem;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  border-radius: 1.5rem;
+  gap: 1rem;
 
-  .register-admin {
-    color: ${whiteHalley};
+  .buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .title-login {
+    color: ${marromEscuro};
     font-weight: 500;
   }
 
-  .form-register {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+.error {
+    color: ${redHalley};
+}
+
+label {
+  color: ${marromEscuro};
+}
+
+.form-login {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
 `;

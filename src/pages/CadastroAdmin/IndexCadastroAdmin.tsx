@@ -6,12 +6,14 @@ import { createAdmin } from '../../services/adminsServices';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import GifCaminhao from '../../Components/GifCaminhao/indexGifCaminhao';
 
 const CadastroAdmin: React.FC = () => {
 
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    const [token,  setToken] = useState('');
     const navigate = useNavigate();
 
     const validateEmail = (email: string) => {
@@ -47,7 +49,8 @@ const CadastroAdmin: React.FC = () => {
             const novoAdmin = {
                 NOME_USUARIO: nome,
                 EMAIL: email,
-                SENHA: senha
+                SENHA: senha,
+                TOKEN: token,
             };
 
             const data = await createAdmin(novoAdmin);
@@ -59,6 +62,7 @@ const CadastroAdmin: React.FC = () => {
             setNome('');
             setEmail('');
             setSenha('');
+            setToken('');
             navigate('/login');
         } catch (error) {
             toast.error("Algo inesperado aconteceu. Por favor tente novamente.", {
@@ -72,30 +76,26 @@ const CadastroAdmin: React.FC = () => {
     return (
         <Container>
             <ContainerLogin>
-                <h1 className='register-admin'>Cadastre um Admin</h1>
-                <div className="form-register">
-                    <InputForm
-                        type='text'
-                        label='Nome'
-                        value={nome}
-                        onChange={(e) => setNome(e.target.value)}
-                    />
-                    <InputForm
-                        type='text'
-                        label='Email'
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <InputForm
-                        type='password'
-                        label='Senha'
-                        value={senha}
-                        onChange={(e) => setSenha(e.target.value)}
-                    />
+                <h1 className='title-login'>Cadastro - Controle de Ponto</h1>
+                <div className="form-login">
+                    <div className="login">
+                        <InputForm type='text' label='Nome' value={nome} onChange={(e) => setNome(e.target.value)} />
+                    </div>
+                    <div className="login">
+                        <InputForm type='text' label='Email' value={email} onChange={(e) => setEmail(e.target.value)} />
+                    </div>
+                    <div className="senha">
+                        <InputForm type='password' label='Senha' value={senha} onChange={(e) => setSenha(e.target.value)} />
+                    </div>
+                    <div className="senha">
+                        <InputForm type='text' label='Token Cadastro' value={token} onChange={(e) => setToken(e.target.value)} />
+                    </div>
+                </div>
+                <div className="buttons">
                     <InputButton text='Cadastrar' onClick={handleSubmitRegister} />
                 </div>
             </ContainerLogin>
-            <ToastContainer />
+            <GifCaminhao />
         </Container>
     );
 };

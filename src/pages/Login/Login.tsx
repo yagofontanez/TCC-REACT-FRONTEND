@@ -5,7 +5,8 @@ import { Container, ContainerLogin } from './styleLogin';
 import { Admin, getAdmins, loginAdmin } from '../../services/adminsServices';
 import InputForm from '../../Components/InputForm/indexInputForm';
 import InputButton from '../../Components/InputButton/indexInputButton';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import GifCaminhao from '../../Components/GifCaminhao/indexGifCaminhao';
 
 const Login: React.FC = () => {
 
@@ -15,25 +16,27 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
 
   const handleGoToDash = async () => {
+
+    if (email === '' || password === '') toast.error('Todos os campos são obrigatórios');
+
     try {
       const response = await loginAdmin(email, password);
-      console.log(email, 'email')
-      console.log(password, 'password')
-      console.log(response.message);
-      if (response.data === 200) {
+      if (response) {
         navigate('/gerenciamento');
-      } else {
-        toast.error('caiu no else sei la pq')
       }
     } catch (error) {
       setShowError(true);
       setEmail('');
       setPassword('');
-      console.log(error, 'e')
-      console.log(email, 'email')
-      console.log(password, 'password')
+      toast.error('Algo inesperado aconteceu. Tente novamente')
     }
   }
+
+  const pressEnterToSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleGoToDash();
+    }
+  };
 
   const onFocusInput = () => {
     setShowError(false);
@@ -41,24 +44,25 @@ const Login: React.FC = () => {
 
   return (
     <Container>
-      <ContainerLogin>
-        <h1 className='title-login'>Login</h1>
+      <ContainerLogin onKeyDown={pressEnterToSubmit}>
+        <h1 className='title-login'>Login - Controle de Ponto</h1>
         <div className="form-login">
           <div className="login">
-          <InputForm type='text' label='Usuário' onFocus={onFocusInput} value={email} onChange={(e) => setEmail(e.target.value)} />
+            <InputForm type='email' label='Email' onFocus={onFocusInput} value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="senha">
-          <InputForm type='password' label='Senha' onFocus={onFocusInput} value={password} onChange={(e) => setPassword(e.target.value)} />
+            <InputForm type='password' label='Senha' onFocus={onFocusInput} value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
         </div>
         <div className="buttons">
           <InputButton text='Entrar' onClick={handleGoToDash} />
+        </div>
           {showError && (
             <p className='error'>Usuário ou Senha inválidos</p>
           )}
-          <InputButton text='Cadastrar' onClick={() => navigate('/registrar')} />
-        </div>
       </ContainerLogin>
+      <GifCaminhao />
+      <ToastContainer />
     </Container>
   );
 };

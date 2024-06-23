@@ -1,6 +1,10 @@
 // src/App.tsx
 import React, { useState, useEffect } from 'react';
 import { getUsuarios, createUsuario, Usuario } from '../../services/usuarioServices';
+import InputButton from '../../Components/InputButton/indexInputButton';
+import axios from 'axios';
+import { Container } from './styleGerenciamentoAlunos';
+import CabecalhoTela from '../../Components/CabecalhoTela/indexCabecalhoTela';
 
 const GerenciamentoAlunos: React.FC = () => {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
@@ -9,6 +13,7 @@ const GerenciamentoAlunos: React.FC = () => {
   const [email, setEmail] = useState('');
   const [telefone, setTelefone] = useState('');
   const [senha, setSenha] = useState('');
+  const [token, setToken] = useState('');
 
   useEffect(() => {
     const fetchUsuarios = async () => {
@@ -33,22 +38,41 @@ const GerenciamentoAlunos: React.FC = () => {
     }
   };
 
+  const handleGenerateToken = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_URL}:${process.env.REACT_APP_PORT}/admins/generateToken`);
+      setToken(response.data.token);
+      console.log(token, 'token')
+    } catch (error) {
+      console.error("Erro ao gerar token:", error);
+    }
+  }
+
   return (
-    <div>
-      <h1>Lista de Usuários</h1>
-      <ul>
-        {usuarios.map(usuario => (
-          <li key={usuario.ID}>{usuario.NOME} {usuario.SOBRENOME}</li>
-        ))}
-      </ul>
-      <h2>Adicionar Usuário</h2>
-      <input type="text" placeholder="Nome" value={nome} onChange={(e) => setNome(e.target.value)} />
-      <input type="text" placeholder="Sobrenome" value={sobrenome} onChange={(e) => setSobrenome(e.target.value)} />
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <input type="text" placeholder="Telefone" value={telefone} onChange={(e) => setTelefone(e.target.value)} />
-      <input type="password" placeholder="Senha" value={senha} onChange={(e) => setSenha(e.target.value)} />
-      <button onClick={handleAddUsuario}>Adicionar</button>
-    </div>
+    <Container>
+      <CabecalhoTela />
+      <div>
+        <h1>Lista de Usuários</h1>
+        <ul>
+          {usuarios.map(usuario => (
+            <li key={usuario.ID}>{usuario.NOME} {usuario.SOBRENOME}</li>
+          ))}
+        </ul>
+        <h2>Adicionar Usuário</h2>
+        <input type="text" placeholder="Nome" value={nome} onChange={(e) => setNome(e.target.value)} />
+        <input type="text" placeholder="Sobrenome" value={sobrenome} onChange={(e) => setSobrenome(e.target.value)} />
+        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input type="text" placeholder="Telefone" value={telefone} onChange={(e) => setTelefone(e.target.value)} />
+        <input type="password" placeholder="Senha" value={senha} onChange={(e) => setSenha(e.target.value)} />
+        <button onClick={handleAddUsuario}>Adicionar</button>
+      </div>
+      <InputButton text='Gerar Token de Cadastro' onClick={handleGenerateToken} />
+      {token && (
+        <div className="token-display">
+          <p>Token de Cadastro: {token}</p>
+        </div>
+      )}
+    </Container>
   );
 };
 
