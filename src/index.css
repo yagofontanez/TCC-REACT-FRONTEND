@@ -7,6 +7,10 @@
   font-family: 'Poppins', sans-serif;
 }
 
+ul {
+  list-style: none;
+}
+
 .toast-success {
   background-color: #3ed543 !important;
   color: white !important;

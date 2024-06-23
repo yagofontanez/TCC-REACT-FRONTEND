@@ -2,41 +2,37 @@ import styled from "styled-components";
 import { cinza, marromEscuro } from "../../utils/colors";
 
 export const Container = styled.div`
-width: 100%;
-height: 5rem;
-background: ${marromEscuro};
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 1rem 0.5rem;
-
-svg {
-    cursor: pointer;
-    transition: 0.3s ease-in-out;
-}
-
-.menu-user {
+  .navbar-menulist {
+    list-style: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.2rem;
-}
+    gap: 1rem;
+    color: white;
+  }
 
-li {
+  .navbar-menulist li {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.1rem;
     position: relative; 
-}
+  }
 
-.container-user {
+  svg {
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out; 
+  }
+
+  .container-gerenciamentos,
+  .container-cadastros,
+  .container-administracao {
     position: absolute;
     top: 100%;
-    right: 0;
+    left: 0;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex-start;
     background-color: ${cinza};
     width: 14rem;
     padding: 1rem 0.4rem;
@@ -44,7 +40,9 @@ li {
     border-radius: 10px;
   }
 
-  .container-user ul {
+  .container-gerenciamentos ul,
+  .container-cadastros ul,
+  .container-administracao ul {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -52,7 +50,9 @@ li {
     font-weight: 600;
   }
 
-  .container-user ul li {
+  .container-gerenciamentos ul li,
+  .container-cadastros ul li,
+  .container-administracao ul li {
     cursor: pointer;
   }
-`
+`;
