@@ -23,35 +23,49 @@ const GerenciamentoAlunos: React.FC = () => {
     fetchUsuarios();
   }, []);
 
-  const handleAddUsuario = async () => {
-    try {
-      const novoUsuario = { NOME: nome, SOBRENOME: sobrenome, EMAIL: email, TELEFONE: telefone, SENHA: senha };
-      const addedUsuario = await createUsuario(novoUsuario);
-      setUsuarios([...usuarios, addedUsuario]);
-      setNome('');
-      setSobrenome('');
-      setEmail('');
-      setTelefone('');
-      setSenha('');
-    } catch (error) {
-      console.error('Erro ao adicionar usuário:', error);
-    }
-  };
+  // const handleAddUsuario = async () => {
+  //   try {
+  //     const novoUsuario = { NOME: nome, SOBRENOME: sobrenome, EMAIL: email, TELEFONE: telefone, SENHA: senha };
+  //     const addedUsuario = await createUsuario(novoUsuario);
+  //     setUsuarios([...usuarios, addedUsuario]);
+  //     setNome('');
+  //     setSobrenome('');
+  //     setEmail('');
+  //     setTelefone('');
+  //     setSenha('');
+  //   } catch (error) {
+  //     console.error('Erro ao adicionar usuário:', error);
+  //   }
+  // };
 
-  const handleGenerateToken = async () => {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_URL}:${process.env.REACT_APP_PORT}/admins/generateToken`);
-      setToken(response.data.token);
-      console.log(token, 'token')
-    } catch (error) {
-      console.error("Erro ao gerar token:", error);
-    }
-  }
+  // const handleGenerateToken = async () => {
+  //   try {
+  //     const response = await axios.get(`${process.env.REACT_APP_URL}:${process.env.REACT_APP_PORT}/admins/generateToken`);
+  //     setToken(response.data.token);
+  //     console.log(token, 'token')
+  //   } catch (error) {
+  //     console.error("Erro ao gerar token:", error);
+  //   }
+  // }
 
   return (
     <Container>
       <CabecalhoTela />
-      <div>
+      <div className="container-relatorio-total">
+        <div id='container-total' className="alunos-totais">
+          <p id='assunto'>Alunos Cadastrados</p>
+          <h1 id='total'>{usuarios.length}</h1>
+        </div>
+        <div id='container-total' className="faculdades-totais">
+          <p className='dark' id='assunto'>Faculdades Cadastradas</p>
+          <h1 className='dark' id='total'>4</h1>
+        </div>
+        <div id='container-total' className="pontos-totais">
+          <p id='assunto'>Pontos Cadastrados</p>
+          <h1 id='total'>12</h1>
+        </div>
+      </div>
+      {/* <div>
         <h1>Lista de Usuários</h1>
         <ul>
           {usuarios.map(usuario => (
@@ -71,7 +85,7 @@ const GerenciamentoAlunos: React.FC = () => {
         <div className="token-display">
           <p>Token de Cadastro: {token}</p>
         </div>
-      )}
+      )} */}
     </Container>
   );
 };
