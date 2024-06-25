@@ -5,6 +5,7 @@ import Login from './pages/Login/Login';
 import GerenciamentoAlunos from './pages/GerenciamentoAlunos/IndexGerenciamentoAlunos';
 import Loading from './pages/Loading/Loading';
 import CadastroAdmin from './pages/CadastroAdmin/IndexCadastroAdmin';
+import CadastroFaculdades from './pages/CadastroFaculdades/indexCadastroFaculdades';
 
 const App: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const App: React.FC = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/gerenciamento" element={<GerenciamentoAlunos />} />
       <Route path="/registrar" element={<CadastroAdmin />} />
+      <Route path="/cadastro/faculdades" element={<CadastroFaculdades />} />
     </Routes>
   );
 }

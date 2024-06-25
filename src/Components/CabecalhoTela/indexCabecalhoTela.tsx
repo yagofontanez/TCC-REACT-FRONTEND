@@ -1,11 +1,13 @@
 // src/App.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container } from './styleCabecalhoTela';
 import yourLogoHere from '../../assets/your-logo-here.jpg';
 import MenuItens from '../MenuItens/indexMenuItens';
 import { FaUser } from "react-icons/fa";
-import { marromClaro, marromEscuro, whiteHalley } from '../../utils/colors';
+import { IoIosNotifications } from "react-icons/io";
+import { marromClaro, marromEscuro, redHalley, whiteHalley } from '../../utils/colors';
 import { useNavigate } from 'react-router-dom';
+import { PedidoCadastro, getPedidos } from '../../services/pedidosCadastroServices';
 
 const CabecalhoTela: React.FC = () => {
 
@@ -14,6 +16,7 @@ const CabecalhoTela: React.FC = () => {
   const [arrowDown, setArrowDown] = useState({
     user: false
   });
+  const [alertNotification, setAlertNotification] = useState<PedidoCadastro[]>([]);
 
   const transformArrow = (menu: string) => {
     setArrowDown((prevState: any) => ({
@@ -22,6 +25,18 @@ const CabecalhoTela: React.FC = () => {
     }));
   }
 
+  useEffect(() => {
+    const getPedidosCadastro = async () => {
+      const pedidosCadastro = await getPedidos();
+      console.log(pedidosCadastro, 'pedidosCadastro');
+      setAlertNotification(pedidosCadastro);
+    }
+
+    getPedidosCadastro();
+  }, []);
+
+
+  console.log(alertNotification.length, 'alertNotification')
 
   return (
     <Container>
@@ -35,7 +50,10 @@ const CabecalhoTela: React.FC = () => {
       <div className="menu-user">
         <ul>
           <li>
-            <FaUser size={30} color={whiteHalley} />
+            <div className="icons">
+              <IoIosNotifications size={30} color={alertNotification.length === 0 ? whiteHalley : redHalley} />
+              <FaUser size={30} color={whiteHalley} />
+            </div>
             <svg
               onClick={() => transformArrow('user')}
               xmlns="http://www.w3.org/2000/svg"

@@ -6,7 +6,8 @@ width: 100%;
 height: 100vh;
 background: ${marromClaro};
 
-.container-relatorio-total {
+.container-relatorio-total,
+.container-infos-relatorio {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -46,5 +47,24 @@ background: ${marromClaro};
 
 .dark {
     color: ${marromEscuro};
+}
+
+.relatorio-alunos, .relatorio-faculdades, .relatorio-pontos {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.container-infos-relatorio {
+    margin-left: 10px;
+    align-items: flex-start;
+    gap: 3rem;
+}
+
+.usuarios-line, .faculdades-line, .pontos-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 28rem;
 }
 `

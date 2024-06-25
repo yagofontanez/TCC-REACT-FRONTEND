@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { cinza, marromEscuro } from "../../utils/colors";
+import { bege, cinza, marromEscuro } from "../../utils/colors";
 
 export const Container = styled.div`
   .navbar-menulist {
@@ -33,7 +33,7 @@ export const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    background-color: ${cinza};
+    background-color: ${bege};
     width: 14rem;
     padding: 1rem 0.4rem;
     z-index: 1;

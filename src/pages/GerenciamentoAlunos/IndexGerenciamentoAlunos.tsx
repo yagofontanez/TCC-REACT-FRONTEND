@@ -5,9 +5,14 @@ import InputButton from '../../Components/InputButton/indexInputButton';
 import axios from 'axios';
 import { Container } from './styleGerenciamentoAlunos';
 import CabecalhoTela from '../../Components/CabecalhoTela/indexCabecalhoTela';
+import { Faculdade, getFaculdades } from '../../services/faculdadeServices';
+import { Ponto, getPontos } from '../../services/pontosServices';
+import { marromEscuro } from '../../utils/colors';
 
 const GerenciamentoAlunos: React.FC = () => {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+  const [faculdades, setFaculdades] = useState<Faculdade[]>([]);
+  const [pontos, setPontos] = useState<Ponto[]>([]);
   const [nome, setNome] = useState('');
   const [sobrenome, setSobrenome] = useState('');
   const [email, setEmail] = useState('');
@@ -17,10 +22,23 @@ const GerenciamentoAlunos: React.FC = () => {
 
   useEffect(() => {
     const fetchUsuarios = async () => {
-      const data = await getUsuarios();
-      setUsuarios(data);
+      const dataUsuarios = await getUsuarios();
+      setUsuarios(dataUsuarios);
     };
+
+    const fetchFaculdades = async () => {
+      const dataFaculdades = await getFaculdades();
+      setFaculdades(dataFaculdades);
+    }
+
+    const fetchPontos = async () => {
+      const dataPontos = await getPontos();
+      setPontos(dataPontos);
+    }
+
     fetchUsuarios();
+    fetchFaculdades();
+    fetchPontos();
   }, []);
 
   // const handleAddUsuario = async () => {
@@ -58,11 +76,49 @@ const GerenciamentoAlunos: React.FC = () => {
         </div>
         <div id='container-total' className="faculdades-totais">
           <p className='dark' id='assunto'>Faculdades Cadastradas</p>
-          <h1 className='dark' id='total'>4</h1>
+          <h1 className='dark' id='total'>{faculdades.length}</h1>
         </div>
         <div id='container-total' className="pontos-totais">
           <p id='assunto'>Pontos Cadastrados</p>
-          <h1 id='total'>12</h1>
+          <h1 id='total'>{pontos.length}</h1>
+        </div>
+      </div>
+      <div className='container-infos-relatorio'>
+        <div className="relatorio-alunos">
+          {usuarios.slice(0, 5).map(usuario => (
+            <div className='usuarios-line'>
+              <p style={{ fontSize: '16px', fontWeight: '600', color: `${marromEscuro}` }}>Aluno: </p>
+              <p style={{ color: `${marromEscuro}`, fontSize: '18px' }} key={usuario.ID}>{usuario.NOME} {usuario.SOBRENOME}</p>
+            </div>
+          ))}
+          {usuarios.length > 0 && (
+            <InputButton text='Ver todos' onClick={() => { }} />
+          )}
+        </div>
+        <div className="relatorio-faculdades">
+          {faculdades.slice(0, 5).map(faculdades => (
+            <div className='faculdades-line'>
+              <p style={{ fontSize: '16px', fontWeight: '600', color: `${marromEscuro}` }}>Faculdade: </p>
+              <p style={{ color: `${marromEscuro}`, fontSize: '18px' }} key={faculdades.ID}>{faculdades.NOME_FACULDADE}</p>
+            </div>
+          ))}
+          {faculdades.length > 0 && (
+            <InputButton text='Ver todos' onClick={() => { }} />
+          )}
+        </div>
+        <div className="relatorio-pontos">
+          {pontos.slice(0, 5).map(pontos => (
+            <div className='pontos-line'>
+              <p style={{ fontSize: '16px', fontWeight: '600', color: `${marromEscuro}` }}>Ponto: </p>
+              <p style={{ color: marromEscuro, fontSize: '18px' }} key={pontos.ID}>
+                {`${pontos.NOME_PONTO} | ${pontos.CIDADE_PONTO}`}
+              </p>
+
+            </div>
+          ))}
+          {pontos.length > 0 && (
+            <InputButton text='Ver todos' onClick={() => { }} />
+          )}
         </div>
       </div>
       {/* <div>

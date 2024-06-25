@@ -7,9 +7,11 @@ interface propsInput {
     label: string;
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    maxLength?: number;
+    onBlur?: any;
 }
 
-const InputForm: React.FC<propsInput> = ({ type, label, value, onChange, onFocus }) => {
+const InputForm: React.FC<propsInput> = ({ type, label, value, onChange, onFocus, onBlur, maxLength }) => {
 
     return (
         <Container>
@@ -20,7 +22,9 @@ const InputForm: React.FC<propsInput> = ({ type, label, value, onChange, onFocus
                     name={type}
                     onChange={onChange}
                     onFocus={onFocus}
+                    onBlur={onBlur}
                     className="text-input"
+                    maxLength={maxLength}
                 />
                 <label htmlFor={label}>{label}</label>
             </div>
