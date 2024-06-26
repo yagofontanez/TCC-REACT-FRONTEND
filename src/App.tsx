@@ -6,16 +6,22 @@ import GerenciamentoAlunos from './pages/GerenciamentoAlunos/IndexGerenciamentoA
 import Loading from './pages/Loading/Loading';
 import CadastroAdmin from './pages/CadastroAdmin/IndexCadastroAdmin';
 import CadastroFaculdades from './pages/CadastroFaculdades/indexCadastroFaculdades';
+import { ToastContainer } from 'react-toastify';
+import CadastroAlunos from './pages/CadastroUsuarios/indexCadastroUsuarios';
 
 const App: React.FC = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Loading />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/gerenciamento" element={<GerenciamentoAlunos />} />
-      <Route path="/registrar" element={<CadastroAdmin />} />
-      <Route path="/cadastro/faculdades" element={<CadastroFaculdades />} />
-    </Routes>
+    <div>
+      <ToastContainer />
+      <Routes>
+        <Route path="/" element={<Loading />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/gerenciamento" element={<GerenciamentoAlunos />} />
+        <Route path="/registrar" element={<CadastroAdmin />} />
+        <Route path="/cadastro/faculdades" element={<CadastroFaculdades />} />
+        <Route path="/cadastro/alunos" element={<CadastroAlunos />} />
+      </Routes>
+    </div>
   );
 }
 

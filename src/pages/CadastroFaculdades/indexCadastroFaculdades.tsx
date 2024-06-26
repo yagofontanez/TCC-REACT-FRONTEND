@@ -8,8 +8,11 @@ import { createFaculdades } from '../../services/faculdadeServices';
 import { ToastContainer, toast } from 'react-toastify';
 import { mascaraCNPJ, mascaraTelefone } from '../../utils/fn';
 import { fetchTodasCidades } from '../../utils/apiCidades';
+import { useNavigate } from 'react-router-dom';
 
 const CadastroFaculdades: React.FC = () => {
+
+    const navigate = useNavigate();
 
     const [nomeFaculdade, setNomeFaculdade] = useState('');
     const [siglaFaculdade, setSiglaFaculdade] = useState('');
@@ -34,6 +37,7 @@ const CadastroFaculdades: React.FC = () => {
 
     const handleSubmitForm = async () => {
         try {
+            
             const novaFaculdade = {
                 NOME_FACULDADE: nomeFaculdade,
                 SIGLA_FACULDADE: siglaFaculdade,
@@ -42,22 +46,47 @@ const CadastroFaculdades: React.FC = () => {
                 TELEFONE: telefoneFaculdade,
             };
 
+            if (!nomeFaculdade) {
+                toast.error('Nome da Faculdade é obrigatório');
+                return;
+            }
+            if (!siglaFaculdade) {
+                toast.error('Sigla da Faculdade é obrigatória');
+                return;
+            }
+            if (!cidadeFaculdade) {
+                toast.error('Cidade da Faculdade é obrigatória');
+                return;
+            }
+            if (!CNPJFaculdade) {
+                toast.error('CNPJ é obrigatório');
+                return;
+            }
+            if (!telefoneFaculdade) {
+                toast.error('Telefone é obrigatório');
+                return;
+            }
             if (!cidades.includes(cidadeFaculdade)) {
                 toast.error('Cidade inválida!');
                 return;
             }
 
-            const response = await createFaculdades(novaFaculdade);
-            console.log('Faculdade criada com sucesso:', response);
-            toast.success('Faculdade criada com sucesso!');
+            if (!cidades.includes(cidadeFaculdade) && cidadeFaculdade !== '') {
+                toast.error('Cidade inválida!');
+                return;
+            }
 
+            const response = await createFaculdades(novaFaculdade);
+            console.log('Faculdade cadastrada com sucesso:', response);
+            toast.success('Faculdade cadastrada com sucesso!');
             setNomeFaculdade('');
             setSiglaFaculdade('');
             setCidadeFaculdade('');
             setCNPJFaculdade('');
             setTelefoneFaculdade('');
+            navigate('/gerenciamento');
         } catch (error) {
-            console.error('Erro ao criar faculdade:', error);
+            console.error('Erro ao cadastrar faculdade:', error);
             toast.error('Falha ao cadastrar Faculdade.')
         }
     };
@@ -101,7 +130,7 @@ const CadastroFaculdades: React.FC = () => {
                             value={CNPJFaculdade}
                             onChange={(e: any) => { setCNPJFaculdade(e.target.value) }}
                             onBlur={handleCNPJChange}
-                            maxLength={14}
+                            maxLength={18}
                         />
                         <InputForm
                             type='tel'
@@ -109,12 +138,12 @@ const CadastroFaculdades: React.FC = () => {
                             value={telefoneFaculdade}
                             onChange={(e: any) => { setTelefoneFaculdade(e.target.value) }}
                             onBlur={handleTelChange}
+                            maxLength={15}
                         />
                     </div>
                     <InputButton text='Cadastrar' onClick={handleSubmitForm} />
                 </div>
             </Content>
-            <ToastContainer />
         </Container>
     );
 };

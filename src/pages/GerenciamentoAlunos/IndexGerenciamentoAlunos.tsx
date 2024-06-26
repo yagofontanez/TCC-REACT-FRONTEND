@@ -1,24 +1,19 @@
-// src/App.tsx
 import React, { useState, useEffect } from 'react';
-import { getUsuarios, createUsuario, Usuario } from '../../services/usuarioServices';
+import { getUsuarios, Usuario } from '../../services/usuarioServices';
 import InputButton from '../../Components/InputButton/indexInputButton';
-import axios from 'axios';
 import { Container } from './styleGerenciamentoAlunos';
 import CabecalhoTela from '../../Components/CabecalhoTela/indexCabecalhoTela';
 import { Faculdade, getFaculdades } from '../../services/faculdadeServices';
 import { Ponto, getPontos } from '../../services/pontosServices';
 import { marromEscuro } from '../../utils/colors';
+import { useNavigate } from 'react-router-dom';
 
 const GerenciamentoAlunos: React.FC = () => {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [faculdades, setFaculdades] = useState<Faculdade[]>([]);
   const [pontos, setPontos] = useState<Ponto[]>([]);
-  const [nome, setNome] = useState('');
-  const [sobrenome, setSobrenome] = useState('');
-  const [email, setEmail] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [senha, setSenha] = useState('');
-  const [token, setToken] = useState('');
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsuarios = async () => {
@@ -40,21 +35,6 @@ const GerenciamentoAlunos: React.FC = () => {
     fetchFaculdades();
     fetchPontos();
   }, []);
-
-  // const handleAddUsuario = async () => {
-  //   try {
-  //     const novoUsuario = { NOME: nome, SOBRENOME: sobrenome, EMAIL: email, TELEFONE: telefone, SENHA: senha };
-  //     const addedUsuario = await createUsuario(novoUsuario);
-  //     setUsuarios([...usuarios, addedUsuario]);
-  //     setNome('');
-  //     setSobrenome('');
-  //     setEmail('');
-  //     setTelefone('');
-  //     setSenha('');
-  //   } catch (error) {
-  //     console.error('Erro ao adicionar usuário:', error);
-  //   }
-  // };
 
   // const handleGenerateToken = async () => {
   //   try {
@@ -92,7 +72,10 @@ const GerenciamentoAlunos: React.FC = () => {
             </div>
           ))}
           {usuarios.length > 0 && (
-            <InputButton text='Ver todos' onClick={() => { }} />
+            <div className='separator-buttons'>
+              <InputButton text='Ver todos' onClick={() => { }} />
+              <InputButton text='Adicionar Aluno' onClick={() => navigate('/cadastro/alunos')} />
+            </div>
           )}
         </div>
         <div className="relatorio-faculdades">
@@ -103,7 +86,10 @@ const GerenciamentoAlunos: React.FC = () => {
             </div>
           ))}
           {faculdades.length > 0 && (
-            <InputButton text='Ver todos' onClick={() => { }} />
+            <div className='separator-buttons'>
+              <InputButton text='Ver todos' onClick={() => { }} />
+              <InputButton text='Adicionar Faculdade' onClick={() => navigate('/cadastro/faculdades')} />
+            </div>
           )}
         </div>
         <div className="relatorio-pontos">
@@ -113,35 +99,16 @@ const GerenciamentoAlunos: React.FC = () => {
               <p style={{ color: marromEscuro, fontSize: '18px' }} key={pontos.ID}>
                 {`${pontos.NOME_PONTO} | ${pontos.CIDADE_PONTO}`}
               </p>
-
             </div>
           ))}
           {pontos.length > 0 && (
-            <InputButton text='Ver todos' onClick={() => { }} />
+            <div className='separator-buttons'>
+              <InputButton text='Ver todos' onClick={() => { }} />
+              <InputButton text='Adicionar Ponto' onClick={() => navigate('/cadastro/pontos')} />
+            </div>
           )}
         </div>
       </div>
-      {/* <div>
-        <h1>Lista de Usuários</h1>
-        <ul>
-          {usuarios.map(usuario => (
-            <li key={usuario.ID}>{usuario.NOME} {usuario.SOBRENOME}</li>
-          ))}
-        </ul>
-        <h2>Adicionar Usuário</h2>
-        <input type="text" placeholder="Nome" value={nome} onChange={(e) => setNome(e.target.value)} />
-        <input type="text" placeholder="Sobrenome" value={sobrenome} onChange={(e) => setSobrenome(e.target.value)} />
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input type="text" placeholder="Telefone" value={telefone} onChange={(e) => setTelefone(e.target.value)} />
-        <input type="password" placeholder="Senha" value={senha} onChange={(e) => setSenha(e.target.value)} />
-        <button onClick={handleAddUsuario}>Adicionar</button>
-      </div>
-      <InputButton text='Gerar Token de Cadastro' onClick={handleGenerateToken} />
-      {token && (
-        <div className="token-display">
-          <p>Token de Cadastro: {token}</p>
-        </div>
-      )} */}
     </Container>
   );
 };

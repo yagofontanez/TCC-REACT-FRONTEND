@@ -6,7 +6,7 @@ import { Admin, getAdmins, loginAdmin } from '../../services/adminsServices';
 import InputForm from '../../Components/InputForm/indexInputForm';
 import InputButton from '../../Components/InputButton/indexInputButton';
 import { ToastContainer, toast } from 'react-toastify';
-import GifCaminhao from '../../Components/GifCaminhao/indexGifCaminhao';
+import BgdLogin from '../../Components/BgdLogin/indexBgdLogin';
 
 const Login: React.FC = () => {
 
@@ -61,7 +61,7 @@ const Login: React.FC = () => {
             <p className='error'>Usuário ou Senha inválidos</p>
           )}
       </ContainerLogin>
-      <GifCaminhao />
+      <BgdLogin />
       <ToastContainer />
     </Container>
   );

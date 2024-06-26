@@ -28,15 +28,12 @@ const CabecalhoTela: React.FC = () => {
   useEffect(() => {
     const getPedidosCadastro = async () => {
       const pedidosCadastro = await getPedidos();
-      console.log(pedidosCadastro, 'pedidosCadastro');
       setAlertNotification(pedidosCadastro);
     }
 
     getPedidosCadastro();
   }, []);
 
-
-  console.log(alertNotification.length, 'alertNotification')
 
   return (
     <Container>

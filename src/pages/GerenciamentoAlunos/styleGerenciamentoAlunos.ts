@@ -67,4 +67,11 @@ background: ${marromClaro};
     justify-content: space-between;
     width: 28rem;
 }
+
+.separator-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
 `

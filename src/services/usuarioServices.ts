@@ -7,6 +7,7 @@ export interface Usuario {
   EMAIL: string;
   TELEFONE: string;
   SENHA: string;
+  FACULDADE_ID?: string;
 }
 
 export const getUsuarios = async (): Promise<Usuario[]> => {
