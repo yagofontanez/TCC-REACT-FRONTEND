@@ -1,21 +1,16 @@
-// src/App.tsx
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Container } from './styleCabecalhoTela';
 import yourLogoHere from '../../assets/your-logo-here.jpg';
 import MenuItens from '../MenuItens/indexMenuItens';
 import { FaUser } from "react-icons/fa";
 import { IoIosNotifications } from "react-icons/io";
 import { marromClaro, marromEscuro, redHalley, whiteHalley } from '../../utils/colors';
-import { useNavigate } from 'react-router-dom';
 import { PedidoCadastro, getPedidos } from '../../services/pedidosCadastroServices';
 
 const CabecalhoTela: React.FC = () => {
-
   const navigate = useNavigate();
-
-  const [arrowDown, setArrowDown] = useState({
-    user: false
-  });
+  const [arrowDown, setArrowDown] = useState({ user: false });
   const [alertNotification, setAlertNotification] = useState<PedidoCadastro[]>([]);
 
   const transformArrow = (menu: string) => {
@@ -25,20 +20,23 @@ const CabecalhoTela: React.FC = () => {
     }));
   }
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  }
+
   useEffect(() => {
     const getPedidosCadastro = async () => {
       const pedidosCadastro = await getPedidos();
       setAlertNotification(pedidosCadastro);
     }
-
     getPedidosCadastro();
   }, []);
-
 
   return (
     <Container>
       <img
-        style={{cursor: 'pointer'}}
+        style={{ cursor: 'pointer' }}
         onClick={() => navigate('/gerenciamento')}
         src={yourLogoHere}
         width={66}
@@ -65,8 +63,8 @@ const CabecalhoTela: React.FC = () => {
             {arrowDown.user && (
               <div className='container-user'>
                 <ul>
-                <li onClick={() => navigate('/')}>Conta</li>
-                <li onClick={() => navigate('/')}>Sair</li>
+                  <li onClick={() => navigate('/')}>Conta</li>
+                  <li onClick={handleLogout}>Sair</li>
                 </ul>
               </div>
             )}

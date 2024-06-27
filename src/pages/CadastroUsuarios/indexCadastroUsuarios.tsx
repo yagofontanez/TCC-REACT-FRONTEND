@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CabecalhoTela from '../../Components/CabecalhoTela/indexCabecalhoTela';
 import InputForm from '../../Components/InputForm/indexInputForm';
 import InputButton from '../../Components/InputButton/indexInputButton';
@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Content } from './styleCadastroUsuarios';
 import ModalFaculdades from '../../Modals/ModalFaculdades/indexModalFaculdades';
 import { toast } from 'react-toastify';
-import { createUsuario } from '../../services/usuarioServices';
+import { Usuario, createUsuario, getUsuarios } from '../../services/usuarioServices';
 
 const CadastroAlunos: React.FC = () => {
 
@@ -21,6 +21,7 @@ const CadastroAlunos: React.FC = () => {
     const [faculdadeAlunoNome, setFaculdadeAlunoNome] = useState('');
     const [openModalFaculdades, setOpenModalFaculdades] = useState(false);
     const [senhaAluno, setSenhaAluno] = useState('');
+    const [usuarios, setUsuarios] = useState<Usuario[]>([]);
 
     const handleTelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTelefoneAluno(mascaraTelefone(e.target.value));
@@ -36,6 +37,16 @@ const CadastroAlunos: React.FC = () => {
         setSenhaAluno(password);
         toast.success('Senha gerada com sucesso!');
     };
+
+
+    useEffect(() => {
+        const fetchUsuarios = async () => {
+            const dataUsuarios = await getUsuarios();
+            setUsuarios(dataUsuarios);
+        };
+        
+        fetchUsuarios();
+    }, []);
 
     const handleSubmitForm = async () => {
         try {
@@ -69,6 +80,11 @@ const CadastroAlunos: React.FC = () => {
                 toast.error('Insira um Email válido');
                 return;
             }
+            const usuarioJaCadastrado = usuarios.find((usuario) => usuario.EMAIL === emailAluno)
+            if (usuarioJaCadastrado) {
+                toast.error('Email do Aluno já cadastrado');
+                return;
+            }
             if (!telefoneAluno) {
                 toast.error('Telefone do Aluno é obrigatório');
                 return;
@@ -77,6 +93,7 @@ const CadastroAlunos: React.FC = () => {
                 toast.error('Faculdade do Aluno é obrigatória');
                 return;
             }
+
 
             const response = await createUsuario(novoAluno);
             console.log('Aluno criado com sucesso!', response);

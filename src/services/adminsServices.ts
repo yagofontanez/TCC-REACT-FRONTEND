@@ -32,6 +32,11 @@ export const deleteAdmin = async (id: string): Promise<void> => {
 };
 
 export const loginAdmin = async (email: string, password: string): Promise<any> => {
-    const response = await api.post('/admins/login', { EMAIL: email, SENHA: password });
-    return response.data;
-};
+    try {
+      const response = await api.post('/admins/login', { EMAIL: email, SENHA: password });
+      return response.data;
+    } catch (error) {
+      console.error('Erro no login:', error);
+      throw error;
+    }
+  };

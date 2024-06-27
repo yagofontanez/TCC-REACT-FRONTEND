@@ -49,4 +49,8 @@ label {
   flex-direction: column;
   gap: 2rem;
 }
+
+input {
+  width: 25rem;
+}
 `;

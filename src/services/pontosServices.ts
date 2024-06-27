@@ -6,6 +6,7 @@ export interface Ponto {
     RUA_PONTO: string;
     BAIRRO_PONTO: string;
     CIDADE_PONTO: string;
+    CEP: string;
     PONTO_REFERENCIA?: string;
 }
 

@@ -73,7 +73,7 @@ const GerenciamentoAlunos: React.FC = () => {
           ))}
           {usuarios.length > 0 && (
             <div className='separator-buttons'>
-              <InputButton text='Ver todos' onClick={() => { }} />
+              <InputButton text='Ver todos' onClick={() => navigate('/listagem/alunos')} />
               <InputButton text='Adicionar Aluno' onClick={() => navigate('/cadastro/alunos')} />
             </div>
           )}

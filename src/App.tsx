@@ -1,28 +1,32 @@
+// src/App.tsx
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import './index.css';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login/Login';
 import GerenciamentoAlunos from './pages/GerenciamentoAlunos/IndexGerenciamentoAlunos';
-import Loading from './pages/Loading/Loading';
 import CadastroAdmin from './pages/CadastroAdmin/IndexCadastroAdmin';
 import CadastroFaculdades from './pages/CadastroFaculdades/indexCadastroFaculdades';
-import { ToastContainer } from 'react-toastify';
 import CadastroAlunos from './pages/CadastroUsuarios/indexCadastroUsuarios';
+import { ToastContainer } from 'react-toastify';
+import PrivateRoute from './PrivateRoute/indexPrivateRoute';
+import ListagemAlunos from './pages/Listagem/ListagemAlunos/indexListagemAlunos';
 
 const App: React.FC = () => {
   return (
-    <div>
+    <>
       <ToastContainer />
       <Routes>
-        <Route path="/" element={<Loading />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/gerenciamento" element={<GerenciamentoAlunos />} />
-        <Route path="/registrar" element={<CadastroAdmin />} />
-        <Route path="/cadastro/faculdades" element={<CadastroFaculdades />} />
-        <Route path="/cadastro/alunos" element={<CadastroAlunos />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/gerenciamento" element={<GerenciamentoAlunos />} />
+          <Route path="/registrar" element={<CadastroAdmin />} />
+          <Route path="/cadastro/faculdades" element={<CadastroFaculdades />} />
+          <Route path="/cadastro/alunos" element={<CadastroAlunos />} />
+          <Route path="/listagem/alunos" element={<ListagemAlunos />} />
+        </Route>
+        <Route path="/" element={<Navigate to="/login" />} />
       </Routes>
-    </div>
+    </>
   );
-}
+};
 
 export default App;

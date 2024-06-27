@@ -43,7 +43,7 @@ const MenuItens: React.FC = () => {
                     {arrowDown.gerenciamentos && (
                         <div className='container-gerenciamentos'>
                             <ul>
-                                <li onClick={() => navigate('/')}>Alunos</li>
+                                <li onClick={() => navigate('/listagem/alunos')}>Alunos</li>
                                 <li onClick={() => navigate('/')}>Pontos de Embarque</li>
                                 <li onClick={() => navigate('/')}>Motoristas</li>
                                 <li onClick={() => navigate('/')}>Ônibus</li>
@@ -68,7 +68,7 @@ const MenuItens: React.FC = () => {
                         <div className='container-cadastros'>
                             <ul>
                                 <li onClick={() => navigate('/cadastro/alunos')}>Alunos</li>
-                                <li onClick={() => navigate('/')}>Pontos de Embarque</li>
+                                <li onClick={() => navigate('/cadastro/pontos')}>Pontos de Embarque</li>
                                 <li onClick={() => navigate('/')}>Motoristas</li>
                                 <li onClick={() => navigate('/')}>Ônibus</li>
                                 <li onClick={() => navigate('/cadastro/faculdades')}>Faculdades</li>
