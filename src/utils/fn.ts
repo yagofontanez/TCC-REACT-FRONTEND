@@ -17,3 +17,13 @@ export const mascaraTelefone = (value: any) => {
         return value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
     }
 }
+
+export const formataCEP = (cep: any) => {
+    cep = cep.replace(/\D/g, '');
+
+    if (cep.length !== 8) {
+        return 'CEP inválido';
+    }
+
+    return cep.replace(/(\d{5})(\d{3})/, '$1-$2');
+}

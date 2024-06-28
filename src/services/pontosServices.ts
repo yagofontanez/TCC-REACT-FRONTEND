@@ -31,5 +31,5 @@ export const updatePonto = async (id: string, ponto: Partial<Omit<Ponto, 'ID'>>)
 };
 
 export const deletePonto = async (id: string): Promise<void> => {
-    await api.delete(`/faculdades/${id}`);
+    await api.delete(`/pontos/${id}`);
 }

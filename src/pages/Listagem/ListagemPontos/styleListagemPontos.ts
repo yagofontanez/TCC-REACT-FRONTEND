@@ -60,6 +60,9 @@ export const Content = styled.div`
         font-weight: bold;
         color: ${marromEscuro};
         background: ${bege};
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .corpo-listagem p {

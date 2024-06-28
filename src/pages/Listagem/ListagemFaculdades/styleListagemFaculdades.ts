@@ -24,7 +24,7 @@ export const Content = styled.div`
     .container-listagem {
         display: grid;
         /* grid-template-columns: repeat(6, 1fr); */
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 50px;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 50px;
         gap: 0;
         border: 1px solid ${marromEscuro};
         overflow: hidden;

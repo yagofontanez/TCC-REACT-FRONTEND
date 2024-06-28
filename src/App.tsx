@@ -1,4 +1,3 @@
-// src/App.tsx
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login/Login';
@@ -9,6 +8,11 @@ import CadastroAlunos from './pages/CadastroUsuarios/indexCadastroUsuarios';
 import { ToastContainer } from 'react-toastify';
 import PrivateRoute from './PrivateRoute/indexPrivateRoute';
 import ListagemAlunos from './pages/Listagem/ListagemAlunos/indexListagemAlunos';
+import ListagemFaculdades from './pages/Listagem/ListagemFaculdades/indexListagemFaculdades';
+import 'react-toastify/dist/ReactToastify.css';
+import CadastroPontos from './pages/CadastroPontos/indexCadastroPontos';
+import ListagemPontos from './pages/Listagem/ListagemPontos/indexListagemPontos';
+
 
 const App: React.FC = () => {
   return (
@@ -21,7 +25,13 @@ const App: React.FC = () => {
           <Route path="/registrar" element={<CadastroAdmin />} />
           <Route path="/cadastro/faculdades" element={<CadastroFaculdades />} />
           <Route path="/cadastro/alunos" element={<CadastroAlunos />} />
+          <Route path="/cadastro/pontos" element={<CadastroPontos />} />
+          <Route path="/cadastro/alunos/:id" element={<CadastroAlunos />} />
+          <Route path="/cadastro/faculdades/:id" element={<CadastroFaculdades />} />
+          <Route path="/cadastro/pontos/:id" element={<CadastroPontos />} />
           <Route path="/listagem/alunos" element={<ListagemAlunos />} />
+          <Route path="/listagem/faculdades" element={<ListagemFaculdades />} />
+          <Route path="/listagem/pontos" element={<ListagemPontos />} />
         </Route>
         <Route path="/" element={<Navigate to="/login" />} />
       </Routes>

@@ -87,7 +87,7 @@ const GerenciamentoAlunos: React.FC = () => {
           ))}
           {faculdades.length > 0 && (
             <div className='separator-buttons'>
-              <InputButton text='Ver todos' onClick={() => { }} />
+              <InputButton text='Ver todos' onClick={() => navigate('/listagem/faculdades')} />
               <InputButton text='Adicionar Faculdade' onClick={() => navigate('/cadastro/faculdades')} />
             </div>
           )}
@@ -103,7 +103,7 @@ const GerenciamentoAlunos: React.FC = () => {
           ))}
           {pontos.length > 0 && (
             <div className='separator-buttons'>
-              <InputButton text='Ver todos' onClick={() => { }} />
+              <InputButton text='Ver todos' onClick={() => navigate('/listagem/pontos')} />
               <InputButton text='Adicionar Ponto' onClick={() => navigate('/cadastro/pontos')} />
             </div>
           )}

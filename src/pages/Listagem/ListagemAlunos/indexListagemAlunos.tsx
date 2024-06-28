@@ -3,13 +3,21 @@ import CabecalhoTela from '../../../Components/CabecalhoTela/indexCabecalhoTela'
 import { Container, Content } from './styleListagemAlunos';
 import { Usuario, deleteUsuario, getUsuarios } from '../../../services/usuarioServices';
 import Pagination from '@mui/material/Pagination';
-import { CiTrash } from "react-icons/ci";
-import { redHalley } from '../../../utils/colors';
+import { FaTrash } from "react-icons/fa";
+import { FaPen } from "react-icons/fa";
+import { marromEscuro, redHalley } from '../../../utils/colors';
 import { toast } from 'react-toastify';
+import { Faculdade, getFaculdades } from '../../../services/faculdadeServices';
+import { Ponto, getPontos } from '../../../services/pontosServices';
+import { useNavigate } from 'react-router-dom';
 
 const ListagemAlunos: React.FC = () => {
 
+    const navigate = useNavigate();
+
     const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+    const [faculdades, setFaculdades] = useState<Faculdade[]>([]);
+    const [pontos, setPontos] = useState<Ponto[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 
@@ -19,6 +27,18 @@ const ListagemAlunos: React.FC = () => {
             setUsuarios(dataUsuarios);
         };
 
+        const fetchFaculdades = async () => {
+            const dataFaculdades = await getFaculdades();
+            setFaculdades(dataFaculdades);
+        };
+
+        const fetchPontos = async () => {
+            const dataPontos = await getPontos();
+            setPontos(dataPontos);
+        }
+
+        fetchPontos();
+        fetchFaculdades();
         fetchUsuarios();
     }, []);
 
@@ -26,6 +46,16 @@ const ListagemAlunos: React.FC = () => {
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = usuarios.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(usuarios.length / itemsPerPage);
+
+    const faculdadesMap = new Map(faculdades.map(faculdade => [faculdade.ID, faculdade.NOME_FACULDADE]));
+    const pontosMap = new Map(pontos.map(ponto => [ponto.ID, ponto.NOME_PONTO]));
+
+    const getFaculdadeNome = (faculdadeId: string) => {
+        return faculdadesMap.get(faculdadeId) || 'Desconhecida';
+    };
+    const getPontoNome = (pontoId: string) => {
+        return pontosMap.get(pontoId) || 'Desconhecido';
+    }
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
         setCurrentPage(page);
@@ -41,6 +71,10 @@ const ListagemAlunos: React.FC = () => {
             toast.error('Falha ao excluir aluno');
         }
     };
+
+    const handleEdit = (id: string) => {
+        navigate(`/cadastro/alunos/${id}`);
+      };
 
 
     return (
@@ -64,14 +98,20 @@ const ListagemAlunos: React.FC = () => {
                             <p>{usuario.SOBRENOME}</p>
                             <p>{usuario.EMAIL}</p>
                             <p>{usuario.TELEFONE}</p>
-                            <p>TESTE</p>
-                            <p>TESTE</p>
-                            <p>
-                                <CiTrash
+                            <p>{getFaculdadeNome(usuario.FACULDADE_ID || '')}</p>
+                            <p>{getPontoNome(usuario.PONTO_ID || '')}</p>
+                            <p className='actions'>
+                                <FaTrash
                                     style={{ marginLeft: '0px' }}
                                     className='icon-trash'
                                     color={redHalley}
                                     onClick={() => handleDelete(usuario.ID)}
+                                />
+                                <FaPen
+                                    style={{marginLeft: '0px'}}
+                                    className='icon-edit'
+                                    color={marromEscuro}
+                                    onClick={() => handleEdit(usuario.ID)}
                                 />
                             </p>
                         </div>

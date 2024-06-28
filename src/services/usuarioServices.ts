@@ -8,6 +8,7 @@ export interface Usuario {
   TELEFONE: string;
   SENHA: string;
   FACULDADE_ID?: string;
+  PONTO_ID?: string;
 }
 
 export const getUsuarios = async (): Promise<Usuario[]> => {

@@ -4,13 +4,15 @@ import { Container, Content } from './styleCadastroFaculdades';
 import CabecalhoTela from '../../Components/CabecalhoTela/indexCabecalhoTela';
 import InputForm from '../../Components/InputForm/indexInputForm';
 import InputButton from '../../Components/InputButton/indexInputButton';
-import { createFaculdades } from '../../services/faculdadeServices';
+import { createFaculdades, getFaculdade, updateFaculdade } from '../../services/faculdadeServices';
 import { ToastContainer, toast } from 'react-toastify';
 import { mascaraCNPJ, mascaraTelefone } from '../../utils/fn';
 import { fetchTodasCidades } from '../../utils/apiCidades';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const CadastroFaculdades: React.FC = () => {
+
+    const { id } = useParams<{ id: string }>();
 
     const navigate = useNavigate();
 
@@ -20,6 +22,7 @@ const CadastroFaculdades: React.FC = () => {
     const [CNPJFaculdade, setCNPJFaculdade] = useState('');
     const [telefoneFaculdade, setTelefoneFaculdade] = useState('');
     const [cidades, setCidades] = useState<string[]>([]);
+    const [isEditMode, setIsEditMode] = useState(false);
 
     useEffect(() => {
         const fetchCidades = async () => {
@@ -34,6 +37,27 @@ const CadastroFaculdades: React.FC = () => {
 
         fetchCidades();
     }, []);
+
+    useEffect(() => {
+        if (id) {
+            const fetchFaculdade = async () => {
+                try {
+                    const faculdade = await getFaculdade(id);
+                    setNomeFaculdade(faculdade.NOME_FACULDADE);
+                    setSiglaFaculdade(faculdade.SIGLA_FACULDADE || '');
+                    setCidadeFaculdade(faculdade.CIDADE);
+                    setCNPJFaculdade(faculdade.CNPJ);
+                    setTelefoneFaculdade(faculdade.TELEFONE || '');
+
+                    setIsEditMode(true);
+                } catch(e) {
+                    console.error('Erro ao carregar faculdade', e);
+                    toast.error('Erro ao carregar faculdade');
+                }
+            };
+            fetchFaculdade();
+        }
+    }, [id]);
 
     const handleSubmitForm = async () => {
         try {
@@ -76,15 +100,25 @@ const CadastroFaculdades: React.FC = () => {
                 return;
             }
 
-            const response = await createFaculdades(novaFaculdade);
-            console.log('Faculdade cadastrada com sucesso:', response);
-            toast.success('Faculdade cadastrada com sucesso!');
-            setNomeFaculdade('');
-            setSiglaFaculdade('');
-            setCidadeFaculdade('');
-            setCNPJFaculdade('');
-            setTelefoneFaculdade('');
-            navigate('/gerenciamento');
+            if (isEditMode) {
+                if (id) {
+                    await updateFaculdade(id, novaFaculdade);
+                    toast.success('Faculdade atualizada com sucesso!');
+                } else {
+                    toast.error('ID da faculdade não encontrada');
+                }
+            } else {
+                const response = await createFaculdades(novaFaculdade);
+                console.log('Faculdade cadastrada com sucesso:', response);
+                toast.success('Faculdade cadastrada com sucesso!');
+                setNomeFaculdade('');
+                setSiglaFaculdade('');
+                setCidadeFaculdade('');
+                setCNPJFaculdade('');
+                setTelefoneFaculdade('');
+            }
+
+            navigate('/listagem/faculdades');
         } catch (error) {
             console.error('Erro ao cadastrar faculdade:', error);
             toast.error('Falha ao cadastrar Faculdade.')
@@ -104,7 +138,7 @@ const CadastroFaculdades: React.FC = () => {
             <CabecalhoTela />
             <Content>
                 <div className="container-cadastro-faculdade">
-                    <h1 className='title'>Cadastro de Faculdades</h1>
+                    <h1 className='title'>{isEditMode ? 'Editar Faculdade' : 'Cadastro de Faculdades'}</h1>
                     <div className="form-cadastro">
                         <InputForm
                             type='text'
@@ -141,7 +175,7 @@ const CadastroFaculdades: React.FC = () => {
                             maxLength={15}
                         />
                     </div>
-                    <InputButton text='Cadastrar' onClick={handleSubmitForm} />
+                    <InputButton text={isEditMode ? 'Salvar' : 'Cadastrar'} onClick={handleSubmitForm} />
                 </div>
             </Content>
         </Container>
