@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import CabecalhoTela from "../../Components/CabecalhoTela/indexCabecalhoTela";
-import InputForm from "../../Components/InputForm/indexInputForm";
-import InputButton from "../../Components/InputButton/indexInputButton";
+import CabecalhoTela from "../../../Components/CabecalhoTela/indexCabecalhoTela";
+import InputForm from "../../../Components/InputForm/indexInputForm";
+import InputButton from "../../../Components/InputButton/indexInputButton";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Container, Content } from "./styleCadastroPontos";
@@ -10,8 +10,10 @@ import {
   createPontos,
   getPonto,
   updatePonto,
-} from "../../services/pontosServices";
-import { fetchTodasCidades } from "../../utils/apiCidades";
+} from "../../../services/pontosServices";
+import { fetchTodasCidades } from "../../../utils/apiCidades";
+import { Motorista, getMotoristas } from "../../../services/motoristasService";
+import ModalMotoristas from "../../../Modals/ModalMotoristas/indexModalMotoristas";
 
 const CadastroPontos: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -23,8 +25,12 @@ const CadastroPontos: React.FC = () => {
   const [cidadePonto, setCidadePonto] = useState("");
   const [pontoReferencia, setPontoReferencia] = useState("");
   const [cepPonto, setCepPonto] = useState("");
+  const [motoristaNome, setMotoristaNome] = useState("");
+  const [motoristaId, setMotoristaId] = useState("");
+  const [motoristas, setMotoristas] = useState<Motorista[]>([]);
   const [cidades, setCidades] = useState<string[]>([]);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [openModalMotoristas, setOpenModalMotoristas] = useState(false);
 
   useEffect(() => {
     const fetchCidades = async () => {
@@ -37,6 +43,16 @@ const CadastroPontos: React.FC = () => {
       }
     };
 
+    const fetchMotoristas = async () => {
+      try {
+        const motoristasData = await getMotoristas();
+        setMotoristas(motoristasData);
+      } catch (error) {
+        console.error("Erro ao buscar motoristas:", error);
+      }
+    };
+
+    fetchMotoristas();
     fetchCidades();
   }, []);
 
@@ -51,6 +67,8 @@ const CadastroPontos: React.FC = () => {
           setCidadePonto(ponto.CIDADE_PONTO);
           setCepPonto(ponto.CEP);
           setPontoReferencia(ponto.PONTO_REFERENCIA || "");
+          setMotoristaId(ponto.MOTORISTA_ID);
+          setMotoristaNome(motoristas.find(m => m.ID === ponto.MOTORISTA_ID)?.NOME_MOTORISTA || '');
           setIsEditMode(true);
         } catch (e) {
           console.error("Erro ao carregar ponto", e);
@@ -59,7 +77,7 @@ const CadastroPontos: React.FC = () => {
       };
       fetchPonto();
     }
-  }, [id]);
+  }, [id, motoristas]);
 
   const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const cep = e.target.value.replace(/\D/g, "");
@@ -104,6 +122,7 @@ const CadastroPontos: React.FC = () => {
         CIDADE_PONTO: cidadePonto,
         PONTO_REFERENCIA: pontoReferencia,
         CEP: cepPonto,
+        MOTORISTA_ID: motoristaId,
       };
 
       if (!nomePonto) {
@@ -147,12 +166,27 @@ const CadastroPontos: React.FC = () => {
     }
   };
 
+  const closeModal = () => {
+    setOpenModalMotoristas(false);
+  };
+
+  const handleMotoristaSelecionado = (
+    motoristaId: string,
+    motoristaNome: string
+  ) => {
+    setMotoristaId(motoristaId);
+    setMotoristaNome(motoristaNome);
+    setOpenModalMotoristas(false);
+  };
+
   return (
     <Container>
       <CabecalhoTela />
       <Content>
         <div className="container-cadastro-faculdade">
-          <h1 className="title">{isEditMode ? 'Editar Ponto' : 'Cadastro de Pontos'}</h1>
+          <h1 className="title">
+            {isEditMode ? "Editar Ponto" : "Cadastro de Pontos"}
+          </h1>
           <div className="form-cadastro">
             <InputForm
               type="text"
@@ -201,12 +235,31 @@ const CadastroPontos: React.FC = () => {
                 setPontoReferencia(e.target.value);
               }}
             />
+            <InputForm
+              type="text"
+              label="Motorista Responsável"
+              value={motoristaNome}
+              onChange={() => {}}
+              onClick={() => setOpenModalMotoristas(true)}
+              readOnly={true}
+              className="select"
+            />
           </div>
           <div className="buttons">
-            <InputButton text={isEditMode ? 'Salvar' : 'Cadastrar'} onClick={handleSubmitForm} />
+            <InputButton
+              text={isEditMode ? "Salvar" : "Cadastrar"}
+              onClick={handleSubmitForm}
+            />
           </div>
         </div>
       </Content>
+      {openModalMotoristas && (
+        <ModalMotoristas
+          isOpen={openModalMotoristas}
+          onClose={closeModal}
+          onMotoristaSelecionado={handleMotoristaSelecionado}
+        />
+      )}
     </Container>
   );
 };

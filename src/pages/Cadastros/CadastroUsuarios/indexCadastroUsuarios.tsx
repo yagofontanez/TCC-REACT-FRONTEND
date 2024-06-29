@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import CabecalhoTela from '../../Components/CabecalhoTela/indexCabecalhoTela';
-import InputForm from '../../Components/InputForm/indexInputForm';
-import InputButton from '../../Components/InputButton/indexInputButton';
-import { mascaraTelefone } from '../../utils/fn';
+import CabecalhoTela from '../../../Components/CabecalhoTela/indexCabecalhoTela';
+import InputForm from '../../../Components/InputForm/indexInputForm';
+import InputButton from '../../../Components/InputButton/indexInputButton';
+import { mascaraTelefone } from '../../../utils/fn';
 import { Container, Content } from './styleCadastroUsuarios';
-import ModalFaculdades from '../../Modals/ModalFaculdades/indexModalFaculdades';
+import ModalFaculdades from '../../../Modals/ModalFaculdades/indexModalFaculdades';
 import { toast } from 'react-toastify';
-import { Usuario, createUsuario, getUsuario, updateUsuario, getUsuarios } from '../../services/usuarioServices';
-import { Faculdade, getFaculdade } from '../../services/faculdadeServices';
-import { Ponto, getPonto } from '../../services/pontosServices';
-import ModalPontos from '../../Modals/ModalPontos/indexModalPontos';
+import { Usuario, createUsuario, getUsuario, updateUsuario, getUsuarios } from '../../../services/usuarioServices';
+import { Faculdade, getFaculdade } from '../../../services/faculdadeServices';
+import { Ponto, getPonto } from '../../../services/pontosServices';
+import ModalPontos from '../../../Modals/ModalPontos/indexModalPontos';
 
 const CadastroAlunos: React.FC = () => {
   const { id } = useParams<{ id: string }>();

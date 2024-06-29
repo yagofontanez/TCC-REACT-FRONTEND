@@ -1,6 +1,6 @@
-import { color } from './../../../node_modules/@mui/system/index.d';
+import { color } from '@mui/system';
 import styled from 'styled-components';
-import { bege, grayHalley, marromEscuro, redHalley, whiteHalley } from '../../utils/colors';
+import { bege, grayHalley, marromEscuro, redHalley, whiteHalley } from '../../../utils/colors';
 import background from '../../assets/backgroundLogin.png';
 
 export const Container = styled.div`

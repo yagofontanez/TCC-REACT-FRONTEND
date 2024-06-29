@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Container, ContainerLogin } from './styleCadastroAdmin';
-import InputForm from '../../Components/InputForm/indexInputForm';
-import InputButton from '../../Components/InputButton/indexInputButton';
-import { createAdmin } from '../../services/adminsServices';
+import InputForm from '../../../Components/InputForm/indexInputForm';
+import InputButton from '../../../Components/InputButton/indexInputButton';
+import { createAdmin } from '../../../services/adminsServices';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
-import GifCaminhao from '../../Components/BgdLogin/indexBgdLogin';
+import GifCaminhao from '../../../Components/BgdLogin/indexBgdLogin';
 
 const CadastroAdmin: React.FC = () => {
 

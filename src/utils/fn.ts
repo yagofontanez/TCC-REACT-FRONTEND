@@ -8,6 +8,20 @@ export const mascaraCNPJ = (value: any) => {
         .slice(0, 18);
 }
 
+export const mascaraCPF = (cpf: any) => {
+    cpf = cpf.replace(/\D/g, '');
+
+    if (cpf.length > 11) {
+        cpf = cpf.substring(0, 11);
+    }
+
+    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+
+    return cpf;
+}
+
 export const mascaraTelefone = (value: any) => {
     value = value.replace(/\D/g, ''); 
 

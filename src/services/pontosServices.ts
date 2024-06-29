@@ -8,6 +8,7 @@ export interface Ponto {
     CIDADE_PONTO: string;
     CEP: string;
     PONTO_REFERENCIA?: string;
+    MOTORISTA_ID?: any;
 }
 
 export const getPontos = async (): Promise<Ponto[]> => {

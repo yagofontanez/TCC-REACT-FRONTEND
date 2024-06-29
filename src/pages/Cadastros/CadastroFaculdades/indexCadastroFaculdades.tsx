@@ -1,13 +1,13 @@
 // src/App.tsx
 import React, { useEffect, useState } from 'react';
 import { Container, Content } from './styleCadastroFaculdades';
-import CabecalhoTela from '../../Components/CabecalhoTela/indexCabecalhoTela';
-import InputForm from '../../Components/InputForm/indexInputForm';
-import InputButton from '../../Components/InputButton/indexInputButton';
-import { createFaculdades, getFaculdade, updateFaculdade } from '../../services/faculdadeServices';
+import CabecalhoTela from '../../../Components/CabecalhoTela/indexCabecalhoTela';
+import InputForm from '../../../Components/InputForm/indexInputForm';
+import InputButton from '../../../Components/InputButton/indexInputButton';
+import { createFaculdades, getFaculdade, updateFaculdade } from '../../../services/faculdadeServices';
 import { ToastContainer, toast } from 'react-toastify';
-import { mascaraCNPJ, mascaraTelefone } from '../../utils/fn';
-import { fetchTodasCidades } from '../../utils/apiCidades';
+import { mascaraCNPJ, mascaraTelefone } from '../../../utils/fn';
+import { fetchTodasCidades } from '../../../utils/apiCidades';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const CadastroFaculdades: React.FC = () => {

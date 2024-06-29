@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { bege, cinza, marromClaro, marromEscuro, rosaClaro, whiteHalley } from "../../utils/colors";
+import { bege, cinza, marromClaro, marromEscuro, rosaClaro, whiteHalley } from "../../../utils/colors";
 
 export const Container = styled.div` 
 width: 100%;

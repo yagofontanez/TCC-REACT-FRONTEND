@@ -46,7 +46,7 @@ const MenuItens: React.FC = () => {
                                 <li onClick={() => navigate('/listagem/alunos')}>Alunos</li>
                                 <li onClick={() => navigate('/listagem/faculdades')}>Faculdades</li>
                                 <li onClick={() => navigate('/listagem/pontos')}>Pontos de Embarque</li>
-                                <li onClick={() => navigate('/')}>Motoristas</li>
+                                <li onClick={() => navigate('/listagem/motoristas')}>Motoristas</li>
                                 <li onClick={() => navigate('/')}>Ônibus</li>
                             </ul>
                         </div>
@@ -71,7 +71,7 @@ const MenuItens: React.FC = () => {
                                 <li onClick={() => navigate('/cadastro/alunos')}>Alunos</li>
                                 <li onClick={() => navigate('/cadastro/faculdades')}>Faculdades</li>
                                 <li onClick={() => navigate('/cadastro/pontos')}>Pontos de Embarque</li>
-                                <li onClick={() => navigate('/')}>Motoristas</li>
+                                <li onClick={() => navigate('/cadastro/motoristas')}>Motoristas</li>
                                 <li onClick={() => navigate('/')}>Ônibus</li>
                                 <li onClick={() => navigate('/')}>Administradores</li>
                             </ul>
