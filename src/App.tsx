@@ -14,12 +14,11 @@ import CadastroPontos from './pages/Cadastros/CadastroPontos/indexCadastroPontos
 import ListagemPontos from './pages/Listagem/ListagemPontos/indexListagemPontos';
 import CadastroMotoristas from './pages/Cadastros/CadastroMotoristas/indexCadastroMotoristas';
 import ListagemMotoristas from './pages/Listagem/ListagemMotoristas/indexListagemMotoristas';
-
+import CadastroVeiculos from './pages/Cadastros/CadastroVeiculos/indexCadastroVeiculos';
 
 const App: React.FC = () => {
   return (
     <>
-      <ToastContainer />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route element={<PrivateRoute />}>
@@ -29,6 +28,7 @@ const App: React.FC = () => {
           <Route path="/cadastro/alunos" element={<CadastroAlunos />} />
           <Route path="/cadastro/pontos" element={<CadastroPontos />} />
           <Route path="/cadastro/motoristas" element={<CadastroMotoristas />} />
+          <Route path="/cadastro/veiculos" element={<CadastroVeiculos />} />
           <Route path="/cadastro/alunos/:id" element={<CadastroAlunos />} />
           <Route path="/cadastro/faculdades/:id" element={<CadastroFaculdades />} />
           <Route path="/cadastro/pontos/:id" element={<CadastroPontos />} />
@@ -39,6 +39,7 @@ const App: React.FC = () => {
         </Route>
         <Route path="/" element={<Navigate to="/login" />} />
       </Routes>
+      <ToastContainer />
     </>
   );
 };
