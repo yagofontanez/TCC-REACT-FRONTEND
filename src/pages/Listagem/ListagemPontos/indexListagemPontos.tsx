@@ -42,9 +42,8 @@ const ListagemPontos: React.FC = () => {
         fetchMotoristas();
     }, []);
 
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = pontos.slice(indexOfFirstItem, indexOfLastItem);
+    // Função para obter os itens da página atual
+    const currentItems = pontos.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
     const totalPages = Math.ceil(pontos.length / itemsPerPage);
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
@@ -69,11 +68,8 @@ const ListagemPontos: React.FC = () => {
     const motoristasMap = new Map(motoristas.map(motorista => [motorista.ID, motorista.NOME_MOTORISTA]));
 
     const getMotoristaNome = (motoristaId: string) => {
-        console.log(motoristasMap.get(motoristaId), 'motoristasMap.get(motoristaId)')
         return motoristasMap.get(motoristaId) || 'Desconhecido';
     };
-
-    console.log(motoristasMap)
 
     return (
         <Container>

@@ -21,6 +21,7 @@ import {
   createVeiculo,
   getVeiculo,
   getVeiculos,
+  updateVeiculo,
 } from "../../../services/veiculosServices";
 import ModalVeiculos from "../../../Modals/ModalVeiculos/indexModalVeiculos";
 
@@ -52,12 +53,6 @@ const CadastroVeiculos: React.FC = () => {
           setModeloVeiculo(veiculo.MODELO_VEICULOS);
           setPlacaVeiculo(veiculo.PLACA_VEICULOS);
           setCapacidadeVeiculo(veiculo.CAPACIDADE_VEICULOS || "");
-          setPontoId(veiculo.PONTO_ID || "");
-
-          if (veiculo.PONTO_ID) {
-            const ponto = await getPonto(veiculo.PONTO_ID);
-            setPontoNome(ponto.NOME_PONTO);
-          }
 
           setIsEditMode(true);
         } catch (error) {
@@ -91,7 +86,6 @@ const CadastroVeiculos: React.FC = () => {
         MODELO_VEICULOS: modeloVeiculo,
         PLACA_VEICULOS: placaVeiculo,
         CAPACIDADE_VEICULOS: capacidadeVeiculoParsed,
-        PONTO_ID: pontoId,
       };
 
       if (!tipoVeiculo) {
@@ -117,17 +111,10 @@ const CadastroVeiculos: React.FC = () => {
       if (!capacidadeVeiculo) {
         toast.error("Capacidade do Veículo é obrigatório");
       }
-      if (!pontoNome) {
-        toast.error("Ponto do Aluno é obrigatório");
-        return;
-      }
-
-      console.log(numeroVeiculo, 'numero veiculo')
-      console.log(capacidadeVeiculo, 'qtde veiculo')
 
       if (isEditMode) {
         if (id) {
-          await updateUsuario(id, veiculoData);
+          await updateVeiculo(id, veiculoData);
           toast.success("Veículo atualizado com sucesso!");
         } else {
           toast.error("ID do veículo não encontrado.");
@@ -218,15 +205,6 @@ const CadastroVeiculos: React.FC = () => {
               onChange={(e: any) => {
                 setCapacidadeVeiculo(e.target.value);
               }}
-            />
-            <InputForm
-              type="text"
-              label="Ponto do Veículo"
-              value={pontoNome}
-              onChange={() => {}}
-              onClick={() => setOpenModalPontos(true)}
-              readOnly={true}
-              className="select"
             />
           </div>
           <InputButton

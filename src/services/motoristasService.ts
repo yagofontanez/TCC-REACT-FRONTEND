@@ -7,7 +7,6 @@ export interface Motorista {
     CPF_MOTORISTA: string;
     EMAIL_MOTORISTA: string;
     TELEFONE_MOTORISTA: string;
-    PONTO_ID: string;
 }
 
 export const getMotoristas = async (): Promise<Motorista[]> => {

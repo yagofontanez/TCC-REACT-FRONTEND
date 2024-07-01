@@ -8,7 +8,6 @@ export interface Veiculo {
     MODELO_VEICULOS: string;
     PLACA_VEICULOS: string;
     CAPACIDADE_VEICULOS: any;
-    PONTO_ID?: string;
 }
 
 export const getVeiculos = async (): Promise<Veiculo[]> => {

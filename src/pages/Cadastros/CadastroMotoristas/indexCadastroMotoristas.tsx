@@ -40,6 +40,10 @@ const CadastroMotoristas: React.FC = () => {
         try {
           const motorista = await getMotorista(id);
           setNomeMotorista(motorista.NOME_MOTORISTA);
+          setSobrenomeMotorista(motorista.SOBRENOME_MOTORISTA);
+          setCPFMotorista(motorista.CPF_MOTORISTA);
+          setEmailMotorista(motorista.EMAIL_MOTORISTA);
+          setTelefoneMotorista(motorista.TELEFONE_MOTORISTA);
 
           setIsEditMode(true);
         } catch (e) {
@@ -59,7 +63,6 @@ const CadastroMotoristas: React.FC = () => {
         CPF_MOTORISTA: CPFMotorista,
         EMAIL_MOTORISTA: emailMotorista,
         TELEFONE_MOTORISTA: telefoneMotorista,
-        PONTO_ID: pontoMotoristaId,
       };
 
       if (!nomeMotorista) {
@@ -80,10 +83,6 @@ const CadastroMotoristas: React.FC = () => {
       }
       if (!telefoneMotorista) {
         toast.error("Telefone do Motorista é obrigatório");
-        return;
-      }
-      if (!pontoMotoristaNome) {
-        toast.error("Ponto do Motorista é obrigatório");
         return;
       }
 
@@ -193,15 +192,6 @@ const CadastroMotoristas: React.FC = () => {
               }}
               onBlur={handleTelChange}
               maxLength={15}
-            />
-            <InputForm
-              type="text"
-              label="Ponto do Motorista"
-              value={pontoMotoristaNome}
-              onChange={() => {}}
-              onClick={() => setOpenModalPontos(true)}
-              readOnly={true}
-              className="select"
             />
           </div>
           <InputButton

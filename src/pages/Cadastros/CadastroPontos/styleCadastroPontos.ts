@@ -39,4 +39,14 @@ input {
     justify-content: space-between;
     gap: 3rem;
 }
+
+.inputs-juntos {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.inputs-juntos input {
+    width: 100%;
+}
 `;

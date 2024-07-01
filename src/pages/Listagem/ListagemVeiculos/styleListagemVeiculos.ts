@@ -23,7 +23,7 @@ export const Content = styled.div`
 
     .container-listagem {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 50px;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 50px;
         gap: 0;
         border: 1px solid ${marromEscuro};
         overflow: hidden;
@@ -31,7 +31,7 @@ export const Content = styled.div`
     }
 
     .icon-trash, .icon-edit {
-        font-size: 18px; /* Diminuindo o tamanho dos ícones */
+        font-size: 18px; 
         cursor: pointer;
         transition: 0.4s ease;
     }
@@ -49,10 +49,10 @@ export const Content = styled.div`
     }
 
     .cabecalho p, .corpo-listagem p {
-        padding: 0.2rem; /* Diminuindo o padding */
+        padding: 0.2rem; 
         border: 1px solid ${marromEscuro};
         text-align: center;
-        font-size: 0.8rem; /* Diminuindo o tamanho da fonte */
+        font-size: 0.8rem;
     }
 
     .cabecalho p {
@@ -75,7 +75,7 @@ export const Content = styled.div`
         background: ${bege}; 
         color: ${marromEscuro};
         border: none;
-        padding: 0.2rem; /* Diminuindo o padding */
+        padding: 0.2rem; 
         text-align: center;
         cursor: pointer;
         transition: background 0.3s ease;

@@ -15,6 +15,7 @@ import ListagemPontos from './pages/Listagem/ListagemPontos/indexListagemPontos'
 import CadastroMotoristas from './pages/Cadastros/CadastroMotoristas/indexCadastroMotoristas';
 import ListagemMotoristas from './pages/Listagem/ListagemMotoristas/indexListagemMotoristas';
 import CadastroVeiculos from './pages/Cadastros/CadastroVeiculos/indexCadastroVeiculos';
+import ListagemVeiculos from './pages/Listagem/ListagemVeiculos/indexListagemVeiculos';
 
 const App: React.FC = () => {
   return (
@@ -29,13 +30,16 @@ const App: React.FC = () => {
           <Route path="/cadastro/pontos" element={<CadastroPontos />} />
           <Route path="/cadastro/motoristas" element={<CadastroMotoristas />} />
           <Route path="/cadastro/veiculos" element={<CadastroVeiculos />} />
+          <Route path="/cadastro/veiculos/:id" element={<CadastroVeiculos />} />
           <Route path="/cadastro/alunos/:id" element={<CadastroAlunos />} />
           <Route path="/cadastro/faculdades/:id" element={<CadastroFaculdades />} />
           <Route path="/cadastro/pontos/:id" element={<CadastroPontos />} />
+          <Route path="/cadastro/motoristas/:id" element={<CadastroMotoristas />} />
           <Route path="/listagem/alunos" element={<ListagemAlunos />} />
           <Route path="/listagem/faculdades" element={<ListagemFaculdades />} />
           <Route path="/listagem/pontos" element={<ListagemPontos />} />
           <Route path="/listagem/motoristas" element={<ListagemMotoristas />} />
+          <Route path="/listagem/veiculos" element={<ListagemVeiculos />} />
         </Route>
         <Route path="/" element={<Navigate to="/login" />} />
       </Routes>

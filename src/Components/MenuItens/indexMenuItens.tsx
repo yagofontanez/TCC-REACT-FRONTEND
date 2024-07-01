@@ -47,7 +47,7 @@ const MenuItens: React.FC = () => {
                                 <li onClick={() => navigate('/listagem/faculdades')}>Faculdades</li>
                                 <li onClick={() => navigate('/listagem/pontos')}>Pontos de Embarque</li>
                                 <li onClick={() => navigate('/listagem/motoristas')}>Motoristas</li>
-                                <li onClick={() => navigate('/')}>Veículos</li>
+                                <li onClick={() => navigate('/listagem/veiculos')}>Veículos</li>
                             </ul>
                         </div>
                     )}
