@@ -16,6 +16,7 @@ import CadastroMotoristas from './pages/Cadastros/CadastroMotoristas/indexCadast
 import ListagemMotoristas from './pages/Listagem/ListagemMotoristas/indexListagemMotoristas';
 import CadastroVeiculos from './pages/Cadastros/CadastroVeiculos/indexCadastroVeiculos';
 import ListagemVeiculos from './pages/Listagem/ListagemVeiculos/indexListagemVeiculos';
+import EdicaoFotoPerfil from './pages/EdicaoFotoPerfil/indexEdicaoFotoPerfil';
 
 const App: React.FC = () => {
   return (
@@ -24,12 +25,12 @@ const App: React.FC = () => {
         <Route path="/login" element={<Login />} />
         <Route element={<PrivateRoute />}>
           <Route path="/gerenciamento" element={<GerenciamentoAlunos />} />
-          <Route path="/registrar" element={<CadastroAdmin />} />
           <Route path="/cadastro/faculdades" element={<CadastroFaculdades />} />
           <Route path="/cadastro/alunos" element={<CadastroAlunos />} />
           <Route path="/cadastro/pontos" element={<CadastroPontos />} />
           <Route path="/cadastro/motoristas" element={<CadastroMotoristas />} />
           <Route path="/cadastro/veiculos" element={<CadastroVeiculos />} />
+          <Route path="/cadastro/administradores" element={<CadastroAdmin />} />
           <Route path="/cadastro/veiculos/:id" element={<CadastroVeiculos />} />
           <Route path="/cadastro/alunos/:id" element={<CadastroAlunos />} />
           <Route path="/cadastro/faculdades/:id" element={<CadastroFaculdades />} />
@@ -40,6 +41,7 @@ const App: React.FC = () => {
           <Route path="/listagem/pontos" element={<ListagemPontos />} />
           <Route path="/listagem/motoristas" element={<ListagemMotoristas />} />
           <Route path="/listagem/veiculos" element={<ListagemVeiculos />} />
+          <Route path="/edicao/fotoperfil" element={<EdicaoFotoPerfil />} />
         </Route>
         <Route path="/" element={<Navigate to="/login" />} />
       </Routes>

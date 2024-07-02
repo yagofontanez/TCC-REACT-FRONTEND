@@ -36,16 +36,6 @@ const GerenciamentoAlunos: React.FC = () => {
     fetchPontos();
   }, []);
 
-  // const handleGenerateToken = async () => {
-  //   try {
-  //     const response = await axios.get(`${process.env.REACT_APP_URL}:${process.env.REACT_APP_PORT}/admins/generateToken`);
-  //     setToken(response.data.token);
-  //     console.log(token, 'token')
-  //   } catch (error) {
-  //     console.error("Erro ao gerar token:", error);
-  //   }
-  // }
-
   return (
     <Container>
       <CabecalhoTela />
