@@ -2,11 +2,18 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Container, Content } from "./styleEdicaoFotoPerfil";
 import CabecalhoTela from "../../Components/CabecalhoTela/indexCabecalhoTela";
+import { marromEscuro } from "../../utils/colors";
+import InputButton from "../../Components/InputButton/indexInputButton";
+import InputFile from "../../Components/InputFile/indexInputFile";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const EdicaoFotoPerfil: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
+
+  const navigate = useNavigate();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -34,10 +41,11 @@ const EdicaoFotoPerfil: React.FC = () => {
       if (response.status === 200) {
         const imageUrl = response.data.url;
         setProfileImage(imageUrl);
-        console.log('Foto de perfil atualizada com sucesso');
+        toast.success('Foto de perfil atualizada com sucesso!');
+        navigate('/gerenciamento');
       }
     } catch (error) {
-      console.error('Erro ao atualizar a foto de perfil:', error);
+      toast.error('Erro ao atualizar a foto de perfil.');
     }
   };
 
@@ -46,10 +54,10 @@ const EdicaoFotoPerfil: React.FC = () => {
       <CabecalhoTela />
       <Content>
         <div className="container-cadastro-faculdade">
-          <h2>Editar Foto de Perfil</h2>
-          {preview && <img src={preview} alt="Pré-visualização" width={100} />}
-          <input type="file" onChange={handleFileChange} />
-          <button onClick={handleUpload}>Upload</button>
+          <h2 style={{color: `${marromEscuro}`, fontSize: '36px'}}>Editar Foto de Perfil</h2>
+          {preview && <img src={preview} alt="Pré-visualização" width={170} />}
+          <InputFile onChange={handleFileChange} />
+          <InputButton onClick={handleUpload} text="Atualizar Foto" />
         </div>
       </Content>
     </Container>

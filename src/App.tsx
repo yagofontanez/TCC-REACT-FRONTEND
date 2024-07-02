@@ -17,12 +17,13 @@ import ListagemMotoristas from './pages/Listagem/ListagemMotoristas/indexListage
 import CadastroVeiculos from './pages/Cadastros/CadastroVeiculos/indexCadastroVeiculos';
 import ListagemVeiculos from './pages/Listagem/ListagemVeiculos/indexListagemVeiculos';
 import EdicaoFotoPerfil from './pages/EdicaoFotoPerfil/indexEdicaoFotoPerfil';
+import EdicaoAdmin from './pages/EdicaoAdmin/indexEdicaoAdmin';
 
 const App: React.FC = () => {
   return (
     <>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login />} />2
         <Route element={<PrivateRoute />}>
           <Route path="/gerenciamento" element={<GerenciamentoAlunos />} />
           <Route path="/cadastro/faculdades" element={<CadastroFaculdades />} />
@@ -42,6 +43,7 @@ const App: React.FC = () => {
           <Route path="/listagem/motoristas" element={<ListagemMotoristas />} />
           <Route path="/listagem/veiculos" element={<ListagemVeiculos />} />
           <Route path="/edicao/fotoperfil" element={<EdicaoFotoPerfil />} />
+          <Route path="/edicao/admin/:id" element={<EdicaoAdmin />} />
         </Route>
         <Route path="/" element={<Navigate to="/login" />} />
       </Routes>

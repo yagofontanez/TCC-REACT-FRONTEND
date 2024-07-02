@@ -9,6 +9,11 @@ import { IoIosNotifications } from "react-icons/io";
 import axios from 'axios';
 import { marromClaro, marromEscuro, redHalley, whiteHalley } from '../../utils/colors';
 import { PedidoCadastro, getPedidos } from '../../services/pedidosCadastroServices';
+import { jwtDecode } from 'jwt-decode';
+
+interface DecodedToken {
+  id: string;
+}
 
 const CabecalhoTela: React.FC<{ profileImage?: string }> = ({ profileImage }) => {
   const navigate = useNavigate();
@@ -53,6 +58,12 @@ const CabecalhoTela: React.FC<{ profileImage?: string }> = ({ profileImage }) =>
     navigate('/login');
   }
 
+  const handleAccountClick = () => {
+    const token = localStorage.getItem('token');
+    const decoded = jwtDecode<DecodedToken>(token!);
+    navigate(`/edicao/admin/${decoded.id}`);
+  }
+
   return (
     <Container>
       <img
@@ -83,7 +94,7 @@ const CabecalhoTela: React.FC<{ profileImage?: string }> = ({ profileImage }) =>
             {arrowDown.user && (
               <div className='container-user'>
                 <ul>
-                  <li onClick={() => navigate('/')}>Conta</li>
+                  <li onClick={handleAccountClick}>Conta</li>
                   <li onClick={handleLogout}>Sair</li>
                 </ul>
               </div>
