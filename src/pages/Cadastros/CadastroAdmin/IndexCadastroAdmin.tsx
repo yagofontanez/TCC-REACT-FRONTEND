@@ -121,7 +121,7 @@ const CadastroAdmin: React.FC = () => {
               onChange={(e) => setToken(e.target.value)}
             />
             <FaRegQuestionCircle
-                style={{fontSize: '34px', color: `${marromEscuro}`, cursor: 'pointer'}}
+                style={{fontSize: '34px', color: `${marromEscuro}`, cursor: 'pointer', marginBottom: '12px'}}
                 onClick={() => setOpenModalInfo(true)}
             />
           </div>
@@ -130,7 +130,6 @@ const CadastroAdmin: React.FC = () => {
           <InputButton text="Cadastrar" onClick={handleSubmitRegister} />
         </div>
       </ContainerLogin>
-      <GifCaminhao />
       {openModalInfo && (
         <ModalDeInfo
             onClose={() => setOpenModalInfo(false)}

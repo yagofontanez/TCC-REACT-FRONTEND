@@ -64,10 +64,10 @@ const CadastroPontos: React.FC = () => {
       try {
         const veiculosData = await getVeiculos();
         setVeiculos(veiculosData);
-      } catch(e) {
+      } catch (e) {
         console.error("Erro ao buscar veículos", e);
       }
-    }
+    };
 
     fetchVeiculos();
     fetchMotoristas();
@@ -88,8 +88,8 @@ const CadastroPontos: React.FC = () => {
           setMotoristaId(ponto.MOTORISTA_ID);
           setVeiculoId(ponto.VEICULO_ID);
           setVeiculoNome(
-            veiculos.find((v) => v.ID === ponto.VEICULO_ID)
-              ?.NUMERO_VEICULOS || ""
+            veiculos.find((v) => v.ID === ponto.VEICULO_ID)?.NUMERO_VEICULOS ||
+              ""
           );
           setMotoristaNome(
             motoristas.find((m) => m.ID === ponto.MOTORISTA_ID)
@@ -173,7 +173,7 @@ const CadastroPontos: React.FC = () => {
         return;
       }
 
-      console.log(novoPonto)
+      console.log(novoPonto);
 
       if (isEditMode) {
         if (id) {
@@ -183,7 +183,7 @@ const CadastroPontos: React.FC = () => {
           toast.error("ID do ponto não encontrado");
         }
       } else {
-        console.log(novoPonto)
+        console.log(novoPonto);
         const response = await createPontos(novoPonto);
         console.log("Ponto criado com sucesso!", response);
         toast.success("Ponto cadastrado com sucesso!");
@@ -209,16 +209,11 @@ const CadastroPontos: React.FC = () => {
     setOpenModalMotoristas(false);
   };
 
-  const handleVeiculoSelecionado = (
-    veiculoId: string,
-    veiculoNome: string,
-  ) =>  {
+  const handleVeiculoSelecionado = (veiculoId: string, veiculoNome: string) => {
     setVeiculoId(veiculoId);
     setVeiculoNome(veiculoNome);
     setOpenModalVeiculos(false);
-  }
-
-  console.log(veiculoId, 'veiculoId')
+  };
 
   return (
     <Container>
@@ -276,26 +271,24 @@ const CadastroPontos: React.FC = () => {
                 setPontoReferencia(e.target.value);
               }}
             />
-            <div className="inputs-juntos">
-              <InputForm
-                type="text"
-                label="Motorista Responsável"
-                value={motoristaNome}
-                onChange={() => {}}
-                onClick={() => setOpenModalMotoristas(true)}
-                readOnly={true}
-                className="select"
-              />
-              <InputForm
-                type="text"
-                label="Veículo Responsável"
-                value={veiculoNome}
-                onChange={() => {}}
-                onClick={() => setOpenModalVeiculos(true)}
-                readOnly={true}
-                className="select"
-              />
-            </div>
+            <InputForm
+              type="text"
+              label="Motorista Responsável"
+              value={motoristaNome}
+              onChange={() => {}}
+              onClick={() => setOpenModalMotoristas(true)}
+              readOnly={true}
+              className="select"
+            />
+            <InputForm
+              type="text"
+              label="Veículo Responsável"
+              value={veiculoNome}
+              onChange={() => {}}
+              onClick={() => setOpenModalVeiculos(true)}
+              readOnly={true}
+              className="select"
+            />
           </div>
           <div className="buttons">
             <InputButton

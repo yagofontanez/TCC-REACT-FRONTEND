@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { marromEscuro } from "../../utils/colors";
 
 export const Container = styled.div`
 #bottone1 {
@@ -7,7 +8,7 @@ export const Container = styled.div`
  padding-bottom: 16px;
  padding-top: 16px;
  border-radius: 4px;
- background: #29251c;
+ background: ${marromEscuro};
  border: none;
  font-family: inherit;
  text-align: center;
@@ -21,11 +22,11 @@ export const Container = styled.div`
 }
 
 #bottone1:hover {
- box-shadow: 7px 5px 56px -14px #29251c;
+ box-shadow: 7px 5px 56px -14px ${marromEscuro};
 }
 
 #bottone1:active {
  transform: scale(0.97);
- box-shadow: 7px 5px 56px -10px #29251c;
+ box-shadow: 7px 5px 56px -10px ${marromEscuro};
 }
 `;

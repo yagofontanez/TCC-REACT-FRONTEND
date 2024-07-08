@@ -54,7 +54,7 @@ const EdicaoFotoPerfil: React.FC = () => {
       <CabecalhoTela />
       <Content>
         <div className="container-cadastro-faculdade">
-          <h2 style={{color: `${marromEscuro}`, fontSize: '36px'}}>Editar Foto de Perfil</h2>
+          <h2 className="title" style={{fontSize: '36px'}}>Editar Foto de Perfil</h2>
           {preview && <img src={preview} alt="Pré-visualização" width={170} />}
           <InputFile onChange={handleFileChange} />
           <InputButton onClick={handleUpload} text="Atualizar Foto" />

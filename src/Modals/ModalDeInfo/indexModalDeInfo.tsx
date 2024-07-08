@@ -29,7 +29,7 @@ const ModalDeInfo: React.FC<ModalDeInfoProps> = ({ isOpen, onClose }) => {
                 <h1 style={{color: `${marromEscuro}`}}>Onde pegar o token?</h1>
                 <div className="div-separator">
                     <p>
-                        Para pegar o token, vá até a tela inicial do sistema, clique no menu de Administração no canto superior da tela, e clique em 'Gerar token p/ Cadastro'. O token será colado para a sua área de transferência.
+                        Para pegar o token, vá até a tela inicial do sistema, clique no menu de Administração, e clique em 'Gerar token p/ Cadastro'. O token será colado para a sua área de transferência.
                     </p>
                     <InputButton 
                         onClick={() => navigate('/gerenciamento')}

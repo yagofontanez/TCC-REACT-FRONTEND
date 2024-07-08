@@ -116,7 +116,5 @@ export const ModalContent = styled.div`
     gap: 1rem;
     max-height: 480px;
     height: 100%;
-    overflow-y: scroll;
-    overflow-x: hidden;
 }
 `;
