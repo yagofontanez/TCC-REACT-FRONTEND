@@ -8,14 +8,17 @@ import { useNavigate } from 'react-router-dom';
 import { Ponto, deletePonto, getPontos } from '../../../services/pontosServices';
 import { formataCEP } from '../../../utils/fn';
 import { Motorista, getMotoristas } from '../../../services/motoristasService';
-import { Container, Content } from './styleListagemVeiculos';
+import { Container, Content, Modal, Overlay } from './styleListagemVeiculos';
 import { Veiculo, deleteVeiculo, getVeiculos } from '../../../services/veiculosServices';
+import { IoIosArrowDown } from 'react-icons/io';
 
 const ListagemVeiculos: React.FC = () => {
     const navigate = useNavigate();
     const [veiculos, setVeiculos] = useState<Veiculo[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const [selectedUsuarioId, setSelectedUsuarioId] = useState<string | null>(null);
+    const [modalPosition, setModalPosition] = useState<{ top: number, left: number } | null>(null);
+    const itemsPerPage = 7;
 
     useEffect(() => {
         const fetchVeiculos = async () => {
@@ -55,20 +58,39 @@ const ListagemVeiculos: React.FC = () => {
         navigate(`/cadastro/veiculos/${id}`);
     };
 
+    const handleAddVeiculo = () => {
+        navigate('/cadastro/veiculos');
+    };
+
+    const handleOpenModal = (id: string, event: React.MouseEvent) => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        setModalPosition({ 
+            top: rect.top + window.scrollY, 
+            left: (rect.left + window.scrollX) - 16 
+        });
+        setSelectedUsuarioId(id);
+    };
+    
+
+    const handleCloseModal = () => {
+        setSelectedUsuarioId(null);
+        setModalPosition(null);
+    };
+
     return (
         <Container>
             <CabecalhoTela />
             <Content>
-                <h1 className='title'>Listagem de Veículos</h1>
+                <h1 className='title'>Listagem de Veículos <span className='add-veiculo' onClick={handleAddVeiculo}>+</span></h1>
                 <div className="container-listagem">
                     <div className='cabecalho'>
-                        <p>TIPO</p>
-                        <p>NUMERO</p>
-                        <p>MARCA</p>
-                        <p>MODELO</p>
-                        <p>PLACA</p>
-                        <p>CAPACIDADE</p>
-                        <p>#</p>
+                        <p>Tipo</p>
+                        <p>Número</p>
+                        <p>Marca</p>
+                        <p>Modelo</p>
+                        <p>Placa</p>
+                        <p>Capacidade</p>
+                        <p></p>
                     </div>
                     {currentItems.map(veiculo => (
                         <div className="corpo-listagem" key={veiculo.ID}>
@@ -79,17 +101,9 @@ const ListagemVeiculos: React.FC = () => {
                             <p>{veiculo.PLACA_VEICULOS}</p>
                             <p>{`${veiculo.CAPACIDADE_VEICULOS} alunos`}</p>
                             <p className='actions'>
-                                <FaTrash
-                                    style={{ marginLeft: '0px' }}
-                                    className='icon-trash'
-                                    color={redHalley}
-                                    onClick={() => handleDelete(veiculo.ID)}
-                                />
-                                <FaPen
-                                    style={{marginLeft: '0px'}}
-                                    className='icon-edit'
-                                    color={marromEscuro}
-                                    onClick={() => handleEdit(veiculo.ID)}
+                            <IoIosArrowDown
+                                    style={{ fontSize: '22px', cursor: 'pointer' }}
+                                    onClick={(e) => handleOpenModal(veiculo.ID, e)}
                                 />
                             </p>
                         </div>
@@ -102,6 +116,24 @@ const ListagemVeiculos: React.FC = () => {
                     shape="rounded"
                 />
             </Content>
+            {selectedUsuarioId && modalPosition && (
+                <>
+                    <Overlay onClick={handleCloseModal} />
+                    <Modal style={{ top: modalPosition.top, left: modalPosition.left }}>
+                        <IoIosArrowDown style={{ fontSize: '22px', cursor: 'pointer' }} />
+                        <div className='modal-content'>
+                            <div className='modal-item' onClick={() => handleEdit(selectedUsuarioId)}>
+                                <FaPen />
+                                <span>Editar</span>
+                            </div>
+                            <div className='modal-item' onClick={() => handleDelete(selectedUsuarioId)}>
+                                <FaTrash />
+                                <span>Excluir</span>
+                            </div>
+                        </div>
+                    </Modal>
+                </>
+            )}
         </Container>
     );
 };

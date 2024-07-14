@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import CabecalhoTela from '../../../Components/CabecalhoTela/indexCabecalhoTela';
 import InputForm from '../../../Components/InputForm/indexInputForm';
 import InputButton from '../../../Components/InputButton/indexInputButton';
@@ -10,19 +10,23 @@ import { toast } from 'react-toastify';
 import { Usuario, createUsuario, getUsuario, updateUsuario, getUsuarios } from '../../../services/usuarioServices';
 import { Faculdade, getFaculdade } from '../../../services/faculdadeServices';
 import { Ponto, getPonto } from '../../../services/pontosServices';
+import { deletePedido } from '../../../services/pedidosCadastroServices';
 import ModalPontos from '../../../Modals/ModalPontos/indexModalPontos';
 
 const CadastroAlunos: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
+  const pedido = location.state?.pedido;
+  const pedidoId = location.state?.pedidoId;
 
-  const [nomeAluno, setNomeAluno] = useState('');
-  const [sobrenomeAluno, setSobrenomeAluno] = useState('');
-  const [emailAluno, setEmailAluno] = useState('');
-  const [telefoneAluno, setTelefoneAluno] = useState('');
-  const [faculdadeAlunoId, setFaculdadeAlunoId] = useState('');
+  const [nomeAluno, setNomeAluno] = useState(pedido ? pedido.NOME_PEDIDO : '');
+  const [sobrenomeAluno, setSobrenomeAluno] = useState(pedido ? pedido.SOBRENOME_PEDIDO : '');
+  const [emailAluno, setEmailAluno] = useState(pedido ? pedido.EMAIL_PEDIDO : '');
+  const [telefoneAluno, setTelefoneAluno] = useState(pedido ? pedido.TELEFONE_PEDIDO : '');
+  const [faculdadeAlunoId, setFaculdadeAlunoId] = useState(pedido ? pedido.FACULDADE_PEDIDO : '');
   const [faculdadeAlunoNome, setFaculdadeAlunoNome] = useState('');
-  const [pontoId, setPontoId] = useState('');
+  const [pontoId, setPontoId] = useState(pedido ? pedido.PONTO_PEDIDO : '');
   const [pontoNome, setPontoNome] = useState('');
   const [openModalFaculdades, setOpenModalFaculdades] = useState(false);
   const [openModalPontos, setOpenModalPontos] = useState(false);
@@ -70,6 +74,40 @@ const CadastroAlunos: React.FC = () => {
       fetchUsuario();
     }
   }, [id]);
+
+  useEffect(() => {
+    if (pedido) {
+      setNomeAluno(pedido.NOME_PEDIDO);
+      setSobrenomeAluno(pedido.SOBRENOME_PEDIDO);
+      setEmailAluno(pedido.EMAIL_PEDIDO);
+      setTelefoneAluno(pedido.TELEFONE_PEDIDO);
+      setFaculdadeAlunoId(pedido.FACULDADE_PEDIDO);
+      setPontoId(pedido.PONTO_PEDIDO);
+
+      const fetchFaculdade = async () => {
+        try {
+          const faculdade = await getFaculdade(pedido.FACULDADE_PEDIDO);
+          setFaculdadeAlunoNome(faculdade.NOME_FACULDADE);
+        } catch (error) {
+          console.error('Erro ao carregar faculdade:', error);
+          toast.error('Erro ao carregar faculdade');
+        }
+      };
+
+      const fetchPonto = async () => {
+        try {
+          const ponto = await getPonto(pedido.PONTO_PEDIDO);
+          setPontoNome(ponto.NOME_PONTO);
+        } catch (error) {
+          console.error('Erro ao carregar ponto:', error);
+          toast.error('Erro ao carregar ponto');
+        }
+      };
+
+      fetchFaculdade();
+      fetchPonto();
+    }
+  }, [pedido]);
 
   const handleTelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTelefoneAluno(mascaraTelefone(e.target.value));
@@ -147,6 +185,14 @@ const CadastroAlunos: React.FC = () => {
         }
         await createUsuario(alunoData);
         toast.success('Aluno cadastrado com sucesso!');
+
+        // Verificar e deletar o pedido de cadastro
+        if (pedido && pedido.EMAIL_PEDIDO === emailAluno) {
+          await deletePedido(pedido.ID);
+          toast.success('Pedido de cadastro removido com sucesso!');
+          // Remover o pedido do modal de notificações
+          navigate('/', { state: { pedidoIdRemovido: pedido.ID } });
+        }
       }
 
       navigate('/listagem/alunos');

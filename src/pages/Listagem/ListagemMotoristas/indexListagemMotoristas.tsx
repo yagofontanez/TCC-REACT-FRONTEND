@@ -9,9 +9,10 @@ import { toast } from 'react-toastify';
 import { Faculdade, getFaculdades } from '../../../services/faculdadeServices';
 import { Ponto, getPontos } from '../../../services/pontosServices';
 import { useNavigate } from 'react-router-dom';
-import { Container, Content } from './styleListagemMotoristas';
+import { Container, Content, Modal, Overlay } from './styleListagemMotoristas';
 import { Motorista, deleteMotorista, getMotoristas } from '../../../services/motoristasService';
 import { mascaraCPF, mascaraTelefone } from '../../../utils/fn';
+import { IoIosArrowDown } from 'react-icons/io';
 
 const ListagemMotoristas: React.FC = () => {
 
@@ -20,7 +21,9 @@ const ListagemMotoristas: React.FC = () => {
     const [motoristas, setMotoristas] = useState<Motorista[]>([]);
     const [pontos, setPontos] = useState<Ponto[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const [selectedUsuarioId, setSelectedUsuarioId] = useState<string | null>(null);
+    const [modalPosition, setModalPosition] = useState<{ top: number, left: number } | null>(null);
+    const itemsPerPage = 7;
 
     useEffect(() => {
         const fetchMotoristas = async () => {
@@ -66,42 +69,53 @@ const ListagemMotoristas: React.FC = () => {
 
     const handleEdit = (id: string) => {
         navigate(`/cadastro/motoristas/${id}`);
-      };
+    };
+
+    
+    const handleAddMotorista = () => {
+        navigate('/cadastro/motoristas');
+    };
+
+    const handleOpenModal = (id: string, event: React.MouseEvent) => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        setModalPosition({ 
+            top: rect.top + window.scrollY, 
+            left: (rect.left + window.scrollX) - 16 
+        });
+        setSelectedUsuarioId(id);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedUsuarioId(null);
+        setModalPosition(null);
+    };
 
 
     return (
         <Container>
             <CabecalhoTela />
             <Content>
-                <h1 className='title'>Listagem de Motoristas</h1>
+                <h1 className='title'>Listagem de Motoristas <span className='add-motorista' onClick={handleAddMotorista}>+</span></h1>
                 <div className="container-listagem">
                     <div className='cabecalho'>
-                        <p>NOME</p>
-                        <p>SOBRENOME</p>
+                        <p>Nome</p>
+                        <p>Sobrenome</p>
                         <p>CPF</p>
-                        <p>EMAIL</p>
-                        <p>TELEFONE</p>
-                        <p>#</p>
+                        <p>Email</p>
+                        <p>Telefone</p>
+                        <p></p>
                     </div>
-                    {currentItems.map(usuario => (
-                        <div className="corpo-listagem" key={usuario.ID}>
-                            <p>{usuario.NOME_MOTORISTA}</p>
-                            <p>{usuario.SOBRENOME_MOTORISTA}</p>
-                            <p>{mascaraCPF(usuario.CPF_MOTORISTA)}</p>
-                            <p>{usuario.EMAIL_MOTORISTA}</p>
-                            <p>{mascaraTelefone(usuario.TELEFONE_MOTORISTA)}</p>
+                    {currentItems.map(motorista => (
+                        <div className="corpo-listagem" key={motorista.ID}>
+                            <p>{motorista.NOME_MOTORISTA}</p>
+                            <p>{motorista.SOBRENOME_MOTORISTA}</p>
+                            <p>{mascaraCPF(motorista.CPF_MOTORISTA)}</p>
+                            <p>{motorista.EMAIL_MOTORISTA}</p>
+                            <p>{mascaraTelefone(motorista.TELEFONE_MOTORISTA)}</p>
                             <p className='actions'>
-                                <FaTrash
-                                    style={{ marginLeft: '0px' }}
-                                    className='icon-trash'
-                                    color={redHalley}
-                                    onClick={() => handleDelete(usuario.ID)}
-                                />
-                                <FaPen
-                                    style={{marginLeft: '0px'}}
-                                    className='icon-edit'
-                                    color={marromEscuro}
-                                    onClick={() => handleEdit(usuario.ID)}
+                            <IoIosArrowDown
+                                    style={{ fontSize: '22px', cursor: 'pointer' }}
+                                    onClick={(e) => handleOpenModal(motorista.ID, e)}
                                 />
                             </p>
                         </div>
@@ -114,6 +128,24 @@ const ListagemMotoristas: React.FC = () => {
                     shape="rounded"
                 />
             </Content>
+            {selectedUsuarioId && modalPosition && (
+                <>
+                    <Overlay onClick={handleCloseModal} />
+                    <Modal style={{ top: modalPosition.top, left: modalPosition.left }}>
+                        <IoIosArrowDown style={{ fontSize: '22px', cursor: 'pointer' }} />
+                        <div className='modal-content'>
+                            <div className='modal-item' onClick={() => handleEdit(selectedUsuarioId)}>
+                                <FaPen />
+                                <span>Editar</span>
+                            </div>
+                            <div className='modal-item' onClick={() => handleDelete(selectedUsuarioId)}>
+                                <FaTrash />
+                                <span>Excluir</span>
+                            </div>
+                        </div>
+                    </Modal>
+                </>
+            )}
         </Container>
     );
 };

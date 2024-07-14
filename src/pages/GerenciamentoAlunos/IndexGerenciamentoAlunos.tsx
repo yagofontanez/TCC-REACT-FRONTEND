@@ -55,7 +55,7 @@ const GerenciamentoAlunos: React.FC = () => {
   return (
     <Container>
       <CabecalhoTela />
-      <div>
+      <div className="div-geral-container">
         <div className="container-relatorio-total">
           <div id="container-total" className="alunos-totais">
             <p id="assunto">Alunos Cadastrados</p>

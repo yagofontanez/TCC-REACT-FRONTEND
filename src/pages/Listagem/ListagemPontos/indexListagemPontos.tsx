@@ -5,17 +5,20 @@ import { FaTrash, FaPen } from "react-icons/fa";
 import { marromEscuro, redHalley } from '../../../utils/colors';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { Container, Content } from './styleListagemPontos';
+import { Container, Content, Modal, Overlay } from './styleListagemPontos';
 import { Ponto, deletePonto, getPontos } from '../../../services/pontosServices';
 import { formataCEP } from '../../../utils/fn';
 import { Motorista, getMotoristas } from '../../../services/motoristasService';
+import { IoIosArrowDown } from 'react-icons/io';
 
 const ListagemPontos: React.FC = () => {
     const navigate = useNavigate();
     const [pontos, setPontos] = useState<Ponto[]>([]);
     const [motoristas, setMotoristas] = useState<Motorista[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const [selectedUsuarioId, setSelectedUsuarioId] = useState<string | null>(null);
+    const [modalPosition, setModalPosition] = useState<{ top: number, left: number } | null>(null);
+    const itemsPerPage = 7;
 
     useEffect(() => {
         const fetchPontos = async () => {
@@ -42,7 +45,6 @@ const ListagemPontos: React.FC = () => {
         fetchMotoristas();
     }, []);
 
-    // Função para obter os itens da página atual
     const currentItems = pontos.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
     const totalPages = Math.ceil(pontos.length / itemsPerPage);
 
@@ -71,21 +73,40 @@ const ListagemPontos: React.FC = () => {
         return motoristasMap.get(motoristaId) || 'Desconhecido';
     };
 
+    const handleOpenModal = (id: string, event: React.MouseEvent) => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        setModalPosition({ 
+            top: rect.top + window.scrollY, 
+            left: (rect.left + window.scrollX) - 16 
+        });
+        setSelectedUsuarioId(id);
+    };
+
+    const handleAddPonto = () => {
+        navigate('/cadastro/pontos');
+    };
+
+    
+    const handleCloseModal = () => {
+        setSelectedUsuarioId(null);
+        setModalPosition(null);
+    };
+
     return (
         <Container>
             <CabecalhoTela />
             <Content>
-                <h1 className='title'>Listagem de Pontos</h1>
+                <h1 className='title'>Listagem de Pontos <span className='add-ponto' onClick={handleAddPonto}>+</span></h1>
                 <div className="container-listagem">
                     <div className='cabecalho'>
-                        <p>NOME</p>
-                        <p>RUA</p>
-                        <p>BAIRRO</p>
-                        <p>CIDADE</p>
-                        <p>PONTO DE<br/>REFERÊNCIA</p>
+                        <p>Nome</p>
+                        <p>Rua</p>
+                        <p>Bairro</p>
+                        <p>Cidade</p>
+                        <p>Ponto de<br/>Referência</p>
                         <p>CEP</p>
-                        <p>MOTORISTA</p>
-                        <p>#</p>
+                        <p>Motorista</p>
+                        <p></p>
                     </div>
                     {currentItems.map(ponto => (
                         <div className="corpo-listagem" key={ponto.ID}>
@@ -97,17 +118,9 @@ const ListagemPontos: React.FC = () => {
                             <p>{formataCEP(ponto.CEP)}</p>
                             <p>{getMotoristaNome(ponto.MOTORISTA_ID)}</p>
                             <p className='actions'>
-                                <FaTrash
-                                    style={{ marginLeft: '0px' }}
-                                    className='icon-trash'
-                                    color={redHalley}
-                                    onClick={() => handleDelete(ponto.ID)}
-                                />
-                                <FaPen
-                                    style={{marginLeft: '0px'}}
-                                    className='icon-edit'
-                                    color={marromEscuro}
-                                    onClick={() => handleEdit(ponto.ID)}
+                            <IoIosArrowDown
+                                    style={{ fontSize: '22px', cursor: 'pointer' }}
+                                    onClick={(e) => handleOpenModal(ponto.ID, e)}
                                 />
                             </p>
                         </div>
@@ -120,6 +133,24 @@ const ListagemPontos: React.FC = () => {
                     shape="rounded"
                 />
             </Content>
+            {selectedUsuarioId && modalPosition && (
+                <>
+                    <Overlay onClick={handleCloseModal} />
+                    <Modal style={{ top: modalPosition.top, left: modalPosition.left }}>
+                        <IoIosArrowDown style={{ fontSize: '22px', cursor: 'pointer' }} />
+                        <div className='modal-content'>
+                            <div className='modal-item' onClick={() => handleEdit(selectedUsuarioId)}>
+                                <FaPen />
+                                <span>Editar</span>
+                            </div>
+                            <div className='modal-item' onClick={() => handleDelete(selectedUsuarioId)}>
+                                <FaTrash />
+                                <span>Excluir</span>
+                            </div>
+                        </div>
+                    </Modal>
+                </>
+            )}
         </Container>
     );
 };

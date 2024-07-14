@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import CabecalhoTela from '../../../Components/CabecalhoTela/indexCabecalhoTela';
-import { Container, Content } from './styleListagemAlunos';
+import { Container, Content, Overlay, Modal } from './styleListagemAlunos';
 import { Usuario, deleteUsuario, getUsuarios } from '../../../services/usuarioServices';
 import Pagination from '@mui/material/Pagination';
 import { FaTrash } from "react-icons/fa";
 import { FaPen } from "react-icons/fa";
+import { IoIosArrowDown } from "react-icons/io";
 import { marromEscuro, redHalley } from '../../../utils/colors';
 import { toast } from 'react-toastify';
 import { Faculdade, getFaculdades } from '../../../services/faculdadeServices';
@@ -19,7 +20,9 @@ const ListagemAlunos: React.FC = () => {
     const [faculdades, setFaculdades] = useState<Faculdade[]>([]);
     const [pontos, setPontos] = useState<Ponto[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const [selectedUsuarioId, setSelectedUsuarioId] = useState<string | null>(null);
+    const [modalPosition, setModalPosition] = useState<{ top: number, left: number } | null>(null);
+    const itemsPerPage = 7;
 
     useEffect(() => {
         const fetchUsuarios = async () => {
@@ -66,6 +69,7 @@ const ListagemAlunos: React.FC = () => {
             await deleteUsuario(id);
             setUsuarios(usuarios.filter(usuario => usuario.ID !== id));
             toast.success('Aluno excluído com sucesso!');
+            handleCloseModal();
         } catch (error) {
             console.error('Erro ao deletar usuário:', error);
             toast.error('Falha ao excluir aluno');
@@ -74,44 +78,59 @@ const ListagemAlunos: React.FC = () => {
 
     const handleEdit = (id: string) => {
         navigate(`/cadastro/alunos/${id}`);
-      };
+    };
 
+    const handleAddAluno = () => {
+        navigate('/cadastro/alunos');
+    };
+
+    const handleOpenModal = (id: string, event: React.MouseEvent) => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        setModalPosition({ 
+            top: rect.top + window.scrollY, 
+            left: (rect.left + window.scrollX) - 16 
+        });
+        setSelectedUsuarioId(id);
+    };
+    
+
+    const handleCloseModal = () => {
+        setSelectedUsuarioId(null);
+        setModalPosition(null);
+    };
 
     return (
         <Container>
             <CabecalhoTela />
             <Content>
-                <h1 className='title'>Listagem de Alunos</h1>
+                <h1 className='title'>
+                    Listagem de Alunos 
+                    <span className='add-aluno' onClick={handleAddAluno}>
+                        +
+                    </span>
+                </h1>
                 <div className="container-listagem">
                     <div className='cabecalho'>
-                        <p>NOME</p>
-                        <p>SOBRENOME</p>
-                        <p>EMAIL</p>
-                        <p>TELEFONE</p>
-                        <p>FACULDADE</p>
-                        <p>PONTO</p>
-                        <p>#</p>
+                        <p>Nome</p>
+                        <p>Sobrenome</p>
+                        <p>Email</p>
+                        <p>Telefone</p>
+                        <p>Faculdade</p>
+                        <p>Ponto</p>
+                        <p></p>
                     </div>
                     {currentItems.map(usuario => (
                         <div className="corpo-listagem" key={usuario.ID}>
-                            <p>{usuario.NOME}</p>
+                            <p className='diferente'>{usuario.NOME}</p>
                             <p>{usuario.SOBRENOME}</p>
-                            <p>{usuario.EMAIL}</p>
+                            <p className='diferente'>{usuario.EMAIL}</p>
                             <p>{usuario.TELEFONE}</p>
-                            <p>{getFaculdadeNome(usuario.FACULDADE_ID || '')}</p>
+                            <p className='diferente'>{getFaculdadeNome(usuario.FACULDADE_ID || '')}</p>
                             <p>{getPontoNome(usuario.PONTO_ID || '')}</p>
                             <p className='actions'>
-                                <FaTrash
-                                    style={{ marginLeft: '0px' }}
-                                    className='icon-trash'
-                                    color={redHalley}
-                                    onClick={() => handleDelete(usuario.ID)}
-                                />
-                                <FaPen
-                                    style={{marginLeft: '0px'}}
-                                    className='icon-edit'
-                                    color={marromEscuro}
-                                    onClick={() => handleEdit(usuario.ID)}
+                                <IoIosArrowDown
+                                    style={{ fontSize: '22px', cursor: 'pointer' }}
+                                    onClick={(e) => handleOpenModal(usuario.ID, e)}
                                 />
                             </p>
                         </div>
@@ -124,6 +143,24 @@ const ListagemAlunos: React.FC = () => {
                     shape="rounded"
                 />
             </Content>
+            {selectedUsuarioId && modalPosition && (
+                <>
+                    <Overlay onClick={handleCloseModal} />
+                    <Modal style={{ top: modalPosition.top, left: modalPosition.left }}>
+                        <IoIosArrowDown style={{ fontSize: '22px', cursor: 'pointer' }} />
+                        <div className='modal-content'>
+                            <div className='modal-item' onClick={() => handleEdit(selectedUsuarioId)}>
+                                <FaPen />
+                                <span>Editar</span>
+                            </div>
+                            <div className='modal-item' onClick={() => handleDelete(selectedUsuarioId)}>
+                                <FaTrash />
+                                <span>Excluir</span>
+                            </div>
+                        </div>
+                    </Modal>
+                </>
+            )}
         </Container>
     );
 };

@@ -19,6 +19,7 @@ import {
   getPedidos,
 } from "../../services/pedidosCadastroServices";
 import { jwtDecode } from "jwt-decode";
+import ModalNotificacoes from "../../Modals/ModalNotificacoes/indexModalNotificacoes";
 
 interface DecodedToken {
   id: string;
@@ -36,6 +37,7 @@ const CabecalhoTela: React.FC<{ profileImage?: string }> = ({
     profileImage || defaultProfileImage
   );
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
 
   useEffect(() => {
     const fetchProfileImage = async () => {
@@ -99,9 +101,10 @@ const CabecalhoTela: React.FC<{ profileImage?: string }> = ({
           <li>
             <div className="icons">
               <IoIosNotifications
-              style={{marginLeft: '1.6rem', display: isMenuOpen ? 'flex' : 'none'}}
+                style={{marginLeft: '1.6rem', display: isMenuOpen ? 'flex' : 'none'}}
                 size={44}
                 color={alertNotification.length === 0 ? whiteHalley : grayHalley}
+                onClick={() => setNotificationOpen(true)}
               />
             </div>
             {isMenuOpen && (
@@ -114,6 +117,9 @@ const CabecalhoTela: React.FC<{ profileImage?: string }> = ({
           </li>
         </ul>
       </div>
+      {notificationOpen && (
+        <ModalNotificacoes isOpen={notificationOpen} onClose={() => setNotificationOpen(false)} />
+      )}
     </Container>
   );
 };

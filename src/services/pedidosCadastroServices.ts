@@ -7,6 +7,7 @@ export interface PedidoCadastro {
     EMAIL_PEDIDO: string;
     TELEFONE_PEDIDO: string;
     FACULDADE_PEDIDO: string;
+    PONTO_PEDIDO: string;
 }
 
 export const getPedidos = async (): Promise<PedidoCadastro[]> => {
