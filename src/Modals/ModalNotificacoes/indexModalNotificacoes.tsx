@@ -3,10 +3,12 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Faculdade, getFaculdades } from '../../services/faculdadeServices';
 import { marromEscuro } from '../../utils/colors';
 import { ModalContainer, ModalContent } from './styleModalNotificacoes';
-import { getPedidos, PedidoCadastro } from '../../services/pedidosCadastroServices';
-import { FaPlus } from "react-icons/fa";
+import { deletePedido, getPedidos, PedidoCadastro } from '../../services/pedidosCadastroServices';
+import { FaPlus, FaTrash } from "react-icons/fa";
 import { mascaraTelefone } from '../../utils/fn';
 import { getPontos, Ponto } from '../../services/pontosServices';
+import InputCheckbox from '../../Components/InputCheckbox/indexInputCheckbox';
+import { toast } from 'react-toastify';
 
 interface ModalNotificacoesProps {
     isOpen: boolean;
@@ -18,6 +20,7 @@ const ModalNotificacoes: React.FC<ModalNotificacoesProps> = ({ isOpen, onClose }
     const [pedidos, setPedidos] = useState<PedidoCadastro[]>([]);
     const [faculdades, setFaculdades] = useState<Faculdade[]>([]);
     const [pontos, setPontos] = useState<Ponto[]>([]);
+    const [selectedPedidos, setSelectedPedidos] = useState<any[]>([]);
     const modalRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
     const location = useLocation();
@@ -44,7 +47,6 @@ const ModalNotificacoes: React.FC<ModalNotificacoesProps> = ({ isOpen, onClose }
         fetchPedidosCadastro();
     }, []);
 
-    // Remover o pedido da lista quando pedidoIdRemovido mudar
     useEffect(() => {
         if (pedidoIdRemovido) {
             setPedidos(prevPedidos => prevPedidos.filter(pedido => pedido.ID !== pedidoIdRemovido));
@@ -71,12 +73,35 @@ const ModalNotificacoes: React.FC<ModalNotificacoesProps> = ({ isOpen, onClose }
         }
     };
 
+    const handleCheckboxChange = (checked: boolean, pedidoId: any) => {
+        setSelectedPedidos(prevSelected => 
+          checked ? [...prevSelected, pedidoId] : prevSelected.filter(id => id !== pedidoId)
+        );
+      };
+
+      const handleDeleteSelected = async () => {
+        for (const pedidoId of selectedPedidos) {
+          await deletePedido(pedidoId);
+        }
+
+        setPedidos(prevPedidos => prevPedidos.filter(pedido => !selectedPedidos.includes(pedido.ID)));
+        setSelectedPedidos([]);
+        window.location.reload();
+      };
+      
+
     if (!isOpen) return null;
 
     return (
         <ModalContainer onClick={handleOverlayClick}>
             <ModalContent ref={modalRef}>
-                <h1 style={{color: `${marromEscuro}`}}>Notificações/Pedidos</h1>
+                <div className="title" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <h1 style={{color: `${marromEscuro}`}}>Notificações/Pedidos</h1>
+                    <FaTrash
+                        style={{fontSize: '30px', color: `${marromEscuro}`, marginRight: '12px'}}
+                        onClick={handleDeleteSelected}
+                    />
+                </div>
                 <div className="div-separator">
                     {pedidos.map(pedido => (
                         <div className='faculdades-line' key={pedido.ID} onClick={() => {}}>
@@ -86,6 +111,7 @@ const ModalNotificacoes: React.FC<ModalNotificacoesProps> = ({ isOpen, onClose }
                             <p>{pedido.EMAIL_PEDIDO}</p>
                             <p>{mascaraTelefone(pedido.TELEFONE_PEDIDO)}</p>
                             <FaPlus color={marromEscuro} onClick={() => handleRealizaCadastro(pedido)}/>
+                            <InputCheckbox onChange={(checked) => handleCheckboxChange(checked, pedido.ID)} />
                         </div>
                     ))}
                 </div>

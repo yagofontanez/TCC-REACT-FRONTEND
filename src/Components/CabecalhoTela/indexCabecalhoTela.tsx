@@ -5,6 +5,7 @@ import defaultProfileImage from "../../assets/your-logo-here.jpg";
 import MenuItens from "../MenuItens/indexMenuItens";
 import { FaUser } from "react-icons/fa";
 import { IoIosNotifications } from "react-icons/io";
+import { MdNotifications, MdNotificationsActive } from "react-icons/md";
 import axios from "axios";
 import {
   bege,
@@ -100,12 +101,23 @@ const CabecalhoTela: React.FC<{ profileImage?: string }> = ({
         <ul>
           <li>
             <div className="icons">
-              <IoIosNotifications
+              {alertNotification.length > 0 ? (
+                <MdNotificationsActive
+                  style={{marginLeft: '1.6rem', display: isMenuOpen ? 'flex' : 'none'}}
+                  size={44}
+                  color={redHalley}
+                  onClick={() => setNotificationOpen(true)}
+                  className='shake-animation'
+                />
+              ) : (
+              <MdNotifications
                 style={{marginLeft: '1.6rem', display: isMenuOpen ? 'flex' : 'none'}}
                 size={44}
                 color={alertNotification.length === 0 ? whiteHalley : grayHalley}
                 onClick={() => setNotificationOpen(true)}
               />
+              )}
+
             </div>
             {isMenuOpen && (
               <div className="container-user">

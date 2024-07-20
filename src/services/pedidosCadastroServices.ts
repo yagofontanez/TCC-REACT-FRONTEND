@@ -17,4 +17,4 @@ export const getPedidos = async (): Promise<PedidoCadastro[]> => {
 
 export const deletePedido = async (id: string): Promise<void> => {
     await api.delete(`/pedidosCadastro/${id}`); 
-}
+};

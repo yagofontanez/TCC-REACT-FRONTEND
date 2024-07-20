@@ -10,7 +10,6 @@ import { toast } from 'react-toastify';
 import { Usuario, createUsuario, getUsuario, updateUsuario, getUsuarios } from '../../../services/usuarioServices';
 import { Faculdade, getFaculdade } from '../../../services/faculdadeServices';
 import { Ponto, getPonto } from '../../../services/pontosServices';
-import { deletePedido } from '../../../services/pedidosCadastroServices';
 import ModalPontos from '../../../Modals/ModalPontos/indexModalPontos';
 
 const CadastroAlunos: React.FC = () => {
@@ -185,14 +184,6 @@ const CadastroAlunos: React.FC = () => {
         }
         await createUsuario(alunoData);
         toast.success('Aluno cadastrado com sucesso!');
-
-        // Verificar e deletar o pedido de cadastro
-        if (pedido && pedido.EMAIL_PEDIDO === emailAluno) {
-          await deletePedido(pedido.ID);
-          toast.success('Pedido de cadastro removido com sucesso!');
-          // Remover o pedido do modal de notificações
-          navigate('/', { state: { pedidoIdRemovido: pedido.ID } });
-        }
       }
 
       navigate('/listagem/alunos');
